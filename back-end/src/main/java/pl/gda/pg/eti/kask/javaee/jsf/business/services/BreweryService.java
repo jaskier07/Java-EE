@@ -19,27 +19,47 @@ public class BreweryService {
 
     @PostConstruct
     public void init() {
-        Beer special = new Beer(1L, "Specjal", 6.5, 23);
-        Beer tyskie = new Beer(2L, "Tyskie Jasne Pełne", 4.9, 12);
-        Beer ksiazece = new Beer(3L, "Książęce Złote Pszeniczne", 5.2, 14);
-        Beer braniewo = new Beer(4L, "Braniewo Chmielowe", 5.0, 21);
-        Beer specjalMocny = new Beer(5L, "Specjal Mocny", 8.0, 32);
-        Beer ksiazeceIpa = new Beer(5L, "Książęce IPA", 4.0, 1);
-        Beer ksiazeceCzerwone = new Beer(5L, "Książęce Czerwony Lager", 5.7, 51);
+        Beer piwo1 = new Beer(1L, "Książęce Czerwony Lager", 1.7, 11);
+        Beer piwo2 = new Beer(2L, "Książęce Złote", 2.7, 21);
+        Beer piwo3 = new Beer(3L, "Książęce Niebieskie", 3.7, 3);
+        Beer piwo4 = new Beer(4L, "Książęce Seledynowe", 4.7, 41);
+        Beer piwo5 = new Beer(5L, "Książęce Oberżyna", 5.1, 51);
+        Beer piwo6 = new Beer(6L, "Harnaś", 5.7, 81);
+        Beer piwo7 = new Beer(7L, "Specjal", 6.5, 23);
+        Beer piwo8 = new Beer(8L, "Tyskie Jasne Pełne", 4.9, 12);
+        Beer piwo9 = new Beer(9L, "Książęce Złote Pszeniczne", 5.2, 14);
+        Beer piwo10 = new Beer(10L, "Braniewo Chmielowe", 5.0, 21);
+        Beer piwo11 = new Beer(11L, "Specjal X", 8.0, 32);
+        Beer piwo12 = new Beer(12L, "Książęce IPA", 4.0, 1);
+        Beer piwo13 = new Beer(13L, "Specjal bursztynowy", 4.5, 223);
+        Beer piwo14 = new Beer(14L, "Specjal specjalny", 3.5, 123);
+        Beer piwo15 = new Beer(15L, "Specjal Mocne", 2.5, 53);
+        Beer piwo16 = new Beer(16L, "Specjal Cienias", 1.5, 13);
+        Beer piwo17 = new Beer(17L, "Specjal Cienias", 1.5, 13);
 
-        Brewery specialBrewery = new Brewery(1L, "Browar Specjal", 23, DateUtils.parseDate("2015-01-01"), new HashSet<>(Arrays.asList(special, braniewo)));
-        Brewery tyskieBrewery = new Brewery(2L, "Browar w Tychach", 432, DateUtils.parseDate("1410-07-15"), new HashSet<>(Arrays.asList(tyskie, ksiazece)));
+        Brewery specialBrewery = new Brewery(1L, "Browar Specjal", 23, DateUtils.parseDate("2015-01-01"), new HashSet<>(Arrays.asList(piwo7, piwo13)));
+        Brewery tyskieBrewery = new Brewery(2L, "Browar w Tychach", 432, DateUtils.parseDate("1410-07-15"), new HashSet<>(Arrays.asList(piwo1, piwo2)));
 
-        Brewer brewerJan = new Brewer(1L, "Jan", 24, new HashSet<>(Arrays.asList(special, tyskie, ksiazece, braniewo)));
-        Brewer brewerMarcin = new Brewer(2L, "Marcin", 56, new HashSet<>(Arrays.asList(specjalMocny, ksiazeceIpa, ksiazeceCzerwone)));
+        Brewer brewerJan = new Brewer(1L, "Jan", 24, new HashSet<>(Arrays.asList(piwo7, piwo1, piwo2, piwo13)));
+        Brewer brewerMarcin = new Brewer(2L, "Marcin", 56, new HashSet<>(Arrays.asList(piwo16, piwo15, piwo14)));
 
-        beers.put(special.getId(), special);
-        beers.put(tyskie.getId(), tyskie);
-        beers.put(ksiazece.getId(), ksiazece);
-        beers.put(braniewo.getId(), braniewo);
-        beers.put(specjalMocny.getId(), specjalMocny);
-        beers.put(ksiazeceIpa.getId(), ksiazeceIpa);
-        beers.put(ksiazeceCzerwone.getId(), ksiazeceCzerwone);
+        beers.put(piwo1.getId(), piwo1);
+        beers.put(piwo2.getId(), piwo2);
+        beers.put(piwo3.getId(), piwo3);
+        beers.put(piwo4.getId(), piwo4);
+        beers.put(piwo5.getId(), piwo5);
+        beers.put(piwo6.getId(), piwo6);
+        beers.put(piwo7.getId(), piwo7);
+        beers.put(piwo8.getId(), piwo8);
+        beers.put(piwo9.getId(), piwo9);
+        beers.put(piwo10.getId(), piwo10);
+        beers.put(piwo11.getId(), piwo11);
+        beers.put(piwo12.getId(), piwo12);
+        beers.put(piwo13.getId(), piwo13);
+        beers.put(piwo14.getId(), piwo14);
+        beers.put(piwo15.getId(), piwo15);
+        beers.put(piwo16.getId(), piwo16);
+        beers.put(piwo17.getId(), piwo17);
 
         breweries.put(specialBrewery.getId(), specialBrewery);
         breweries.put(tyskieBrewery.getId(), tyskieBrewery);

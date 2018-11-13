@@ -1,14 +1,18 @@
 package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
 
+import pl.gda.pg.eti.kask.javaee.jsf.api.Pagination;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.IBeerFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
+import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static javax.ws.rs.core.Response.*;
 import static pl.gda.pg.eti.kask.javaee.jsf.utils.UriUtils.uri;
@@ -25,6 +29,14 @@ public class BeerController {
     @GET
     public Collection<Beer> getAllBeers() {
         return breweryService.findAllBeers();
+    }
+
+    @GET
+    @Path("/all")
+    public Collection<Beer> getBeersUsingPagination(@QueryParam("from") int from, @QueryParam("to") int to, @QueryParam("diff") int diff) {
+        Pagination pagination = new Pagination(from, to);
+        pagination.normalizeWithSize(breweryService.findAllBeers().size());
+        return new ArrayList<>(breweryService.findAllBeers()).subList(pagination.getFrom(), pagination.getTo());
     }
 
     @POST

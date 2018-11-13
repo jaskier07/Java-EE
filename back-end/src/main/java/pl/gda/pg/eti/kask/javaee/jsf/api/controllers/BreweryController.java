@@ -8,7 +8,10 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import static javax.ws.rs.core.Response.*;
 import static pl.gda.pg.eti.kask.javaee.jsf.utils.UriUtils.uri;
@@ -26,6 +29,7 @@ public class BreweryController {
     public Collection<Brewery> getAllBreweries() {
         return breweryService.findAllBreweries();
     }
+
 
     @POST
     public Response saveBrewery(Brewery brewery) {
