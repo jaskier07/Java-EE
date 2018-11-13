@@ -28,28 +28,24 @@ public class BreweryFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext response) throws IOException {
         filterUtils.addAccessControl(response);
 
-        response.getHeaders().add("all", createHeaderValue("all available breweries", "GET"));
+        response.getHeaders().add(Headers.ALL_ENTITIES.getValue(), createHeaderValue("all available breweries", HttpVerbs.GET));
         if (response.getEntity() instanceof Brewery) {
             Long id = ((Brewery) response.getEntity()).getId();
-            response.getHeaders().add("save", createHeaderValue("save new brewery", "POST"));
-            response.getHeaders().add("put", createHeaderValue("update brewery", "updateBrewery", id, "PUT"));
-            response.getHeaders().add("self", createHeaderValue("self", "getBrewery", id, "GET"));
-            response.getHeaders().add("delete", createHeaderValue("remove brewery", "deleteBrewery", id, "DELETE"));
+            response.getHeaders().add(Headers.SAVE_ENTITY.getValue(), createHeaderValue("save new brewery", HttpVerbs.POST));
+            response.getHeaders().add(Headers.UPDATE_ENTITY.getValue(), createHeaderValue("update brewery", "updateBrewery", id, HttpVerbs.PUT));
+            response.getHeaders().add(Headers.SELF_ENTITY.getValue(), createHeaderValue("self", "getBrewery", id, HttpVerbs.GET));
+            response.getHeaders().add(Headers.REMOVE_ENTITY.getValue(), createHeaderValue("remove brewery", "deleteBrewery", id, HttpVerbs.DELETE));
 
             Set<Beer> beers = ((Brewery) response.getEntity()).getBeers();
             filterUtils.addBeerHeaders(response, beers);
         }
     }
 
-    private Link createBeerHeaderValue(String rel, String methodName, Long id, String method) {
-        return Link.fromUri(UriUtils.uri(BeerController.class, methodName, id)).rel(rel).title(method).build();
+    private Link createHeaderValue(String rel, String methodName, Long id, HttpVerbs verbs) {
+        return Link.fromUri(UriUtils.uri(BreweryController.class, methodName, id)).rel(rel).title(verbs.name()).build();
     }
 
-    private Link createHeaderValue(String rel, String methodName, Long id, String method) {
-        return Link.fromUri(UriUtils.uri(BreweryController.class, methodName, id)).rel(rel).title(method).build();
-    }
-
-    private Link createHeaderValue(String rel, String method) {
-        return Link.fromUri(UriUtils.uri(BreweryController.class)).rel(rel).title(method).build();
+    private Link createHeaderValue(String rel, HttpVerbs verbs) {
+        return Link.fromUri(UriUtils.uri(BreweryController.class)).rel(rel).title(verbs.name()).build();
     }
 }

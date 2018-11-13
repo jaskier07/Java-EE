@@ -1,6 +1,7 @@
 package pl.gda.pg.eti.kask.javaee.jsf.utils;
 
 import pl.gda.pg.eti.kask.javaee.jsf.api.controllers.BeerController;
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.HttpVerbs;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 
 import javax.ws.rs.container.ContainerResponseContext;
@@ -18,7 +19,7 @@ public class FilterUtils {
     public void addBeerHeaders(ContainerResponseContext response, Set<Beer>beers) {
         int index = 0;
         for (Beer beer : beers) {
-            response.getHeaders().add("beer_" + index, createBeerHeaderValue("get beer nr " + index, "getBeer", beer.getId(), "GET"));
+            response.getHeaders().add("beer_" + index, createBeerHeaderValue("get beer nr " + index, "getBeer", beer.getId(), HttpVerbs.GET.name()));
             ++index;
         }
     }

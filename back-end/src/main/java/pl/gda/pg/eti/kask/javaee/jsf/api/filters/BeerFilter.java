@@ -37,13 +37,13 @@ public class BeerFilter implements ContainerResponseFilter {
         if (isPaginationRequest(request)) {
             addPaginationHeaders(request, response);
         } else {
-            response.getHeaders().add("all", createHeaderValue("all available beers", "GET"));
+            response.getHeaders().add(Headers.ALL_ENTITIES.getValue(), createHeaderValue("all available beers", HttpVerbs.GET));
             if (response.getEntity() instanceof Beer) {
                 Long id = ((Beer) response.getEntity()).getId();
-                response.getHeaders().add("save", createHeaderValue("save new beer", "POST"));
-                response.getHeaders().add("put", createHeaderValue("update beer", "updateBeer", id, "PUT"));
-                response.getHeaders().add("self", createHeaderValue("self", "getBeer", id, "GET"));
-                response.getHeaders().add("delete", createHeaderValue("remove beer", "deleteBeer", id, "DELETE"));
+                response.getHeaders().add(Headers.SAVE_ENTITY.getValue(), createHeaderValue("save new beer", HttpVerbs.POST));
+                response.getHeaders().add(Headers.UPDATE_ENTITY.getValue(), createHeaderValue("update beer", "updateBeer", id, HttpVerbs.PUT));
+                response.getHeaders().add(Headers.SELF_ENTITY.getValue(), createHeaderValue("self", "getBeer", id, HttpVerbs.GET));
+                response.getHeaders().add(Headers.REMOVE_ENTITY.getValue(), createHeaderValue("remove beer", "deleteBeer", id, HttpVerbs.DELETE));
             }
         }
     }
@@ -69,21 +69,21 @@ public class BeerFilter implements ContainerResponseFilter {
         Pagination previous = new Pagination();
         previous.setFrom(findPreviousFrom(request, diff));
         previous.setTo(request.getFrom());
-        responseContext.getHeaders().add("previous", createHeaderValue("previous elements", "getBeersUsingPagination", previous));
+        responseContext.getHeaders().add(Headers.PREVIOUS_COLLECTION.getValue(), createHeaderValue("previous elements", "getBeersUsingPagination", previous));
     }
 
     private void setPaginationNextElements(Pagination request, ContainerResponseContext responseContext, int diff) {
         Pagination next = new Pagination();
         next.setFrom(request.getTo());
         next.setTo(request.getTo() + diff);
-        responseContext.getHeaders().add("next", createHeaderValue("next elements", "getBeersUsingPagination", next));
+        responseContext.getHeaders().add(Headers.NEXT_COLLECTION.getValue(), createHeaderValue("next elements", "getBeersUsingPagination", next));
     }
 
     private void setPaginationNextRemainedElements(Pagination request, ContainerResponseContext responseContext, int diff) {
         Pagination next = new Pagination();
         next.setFrom(request.getTo());
         next.setTo(beersSize);
-        responseContext.getHeaders().add("next", createHeaderValue("next elements", "getBeersUsingPagination", next));
+        responseContext.getHeaders().add(Headers.NEXT_COLLECTION.getValue(), createHeaderValue("next elements", "getBeersUsingPagination", next));
     }
 
     private boolean isPaginationRequest(ContainerRequestContext request) {
@@ -100,14 +100,14 @@ public class BeerFilter implements ContainerResponseFilter {
     }
 
     private Link createHeaderValue(String rel, String methodName, Pagination pagination) {
-        return Link.fromUri(UriUtils.paginationUri(BeerController.class, methodName, pagination.getFrom(), pagination.getTo())).rel(rel).title("GET").build();
+        return Link.fromUri(UriUtils.paginationUri(BeerController.class, methodName, pagination.getFrom(), pagination.getTo())).rel(rel).title(HttpVerbs.GET.name()).build();
     }
 
-    private Link createHeaderValue(String rel, String methodName, Long id, String method) {
-        return Link.fromUri(UriUtils.uri(BeerController.class, methodName, id)).rel(rel).title(method).build();
+    private Link createHeaderValue(String rel, String methodName, Long id, HttpVerbs verbs) {
+        return Link.fromUri(UriUtils.uri(BeerController.class, methodName, id)).rel(rel).title(verbs.name()).build();
     }
 
-    private Link createHeaderValue(String rel, String method) {
-        return Link.fromUri(UriUtils.uri(BeerController.class)).rel(rel).title(method).build();
+    private Link createHeaderValue(String rel, HttpVerbs verbs) {
+        return Link.fromUri(UriUtils.uri(BeerController.class)).rel(rel).title(verbs.name()).build();
     }
 }

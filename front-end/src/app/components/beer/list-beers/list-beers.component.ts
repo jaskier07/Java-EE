@@ -21,8 +21,7 @@ export class ListBeersComponent implements OnInit {
   previousResource: Resource;
   nextResource: Resource;
 
-  constructor(private beerService: BeerService,
-              private sharedService: SharedService) {
+  constructor(private beerService: BeerService) {
   }
 
   ngOnInit() {
