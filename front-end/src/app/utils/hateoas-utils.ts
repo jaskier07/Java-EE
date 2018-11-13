@@ -8,6 +8,8 @@ export class HateoasUtils {
   private SELF = 'self';
   private BEER_0 = 'beer_0';
   private LINK_SEPARATOR = ';';
+  private PREVIOUS_BEER = 'previous';
+  private NEXT_BEER = 'next';
 
   printLinks(response) {
     console.log(this.createResources(response));
@@ -37,17 +39,31 @@ export class HateoasUtils {
         index++;
       }
     }
+    if (response.headers.get(this.PREVIOUS_BEER)) {
+      links.push(this.createResource(response.headers.get(this.PREVIOUS_BEER)));
+    }
+    if (response.headers.get(this.NEXT_BEER)) {
+      links.push(this.createResource(response.headers.get(this.NEXT_BEER)));
+    }
     return links;
   }
 
   createResource(header: string) {
     const parts = header.split(this.LINK_SEPARATOR);
-    const uri = parts[0].replace('<', '').replace('>', '');
-    const rel = parts[1].replace(' rel=', '').replace('"', '');
-    if (parts.length === 3) {
-      const method = parts[2].replace(' title=\"', '').replace('\"', '');
-      return new Resource(uri, rel, method);
+    if (parts.length > 1) {
+      const uri = parts[0].replace('<', '').replace('>', '');
+      const rel = parts[1].replace(' rel=', '').replace('\"', '');
+      if (parts.length === 3) {
+        const method = parts[2].replace(' title=\"', '').replace('\"', '');
+        return new Resource(uri, rel, method);
+      }
+      return new Resource(uri, rel);
     }
-    return new Resource(uri, rel);
+  }
+
+  createReourceWithHeader(response, value: string) {
+    if (response.headers.get(value)) {
+      return this.createResource(response.headers.get(value));
+    }
   }
 }

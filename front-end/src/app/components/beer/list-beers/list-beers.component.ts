@@ -3,6 +3,8 @@ import {Observable} from 'rxjs';
 import {Beer} from '../../../model/beer';
 import {BeerService} from '../beer-service';
 import {SharedService} from '../../shared-service';
+import {HateoasUtils} from '../../../utils/hateoas-utils';
+import {Resource} from '../../../utils/resource';
 
 @Component({
   selector: 'app-list-beers',
@@ -11,18 +13,48 @@ import {SharedService} from '../../shared-service';
 })
 export class ListBeersComponent implements OnInit {
 
-  beers: Observable<Beer[]>;
+  private DIFF = 5;
+  private hateoas = new HateoasUtils();
+  from = 0;
+  to = this.from + this.DIFF;
+  beers: Beer[];
+  previousResource: Resource;
+  nextResource: Resource;
 
   constructor(private beerService: BeerService,
               private sharedService: SharedService) {
   }
 
   ngOnInit() {
-    this.beers = this.sharedService.findAllBeers();
+    this.beerService.findBeersUsingPagination(this.from.toString(), this.to.toString(), this.DIFF.toString())
+      .subscribe(response => {
+        this.handleResponse(response);
+      });
+  }
+
+  handleResponse(response) {
+    this.hateoas.printLinks(response);
+    this.beers = response.body;
+    this.previousResource = this.hateoas.createReourceWithHeader(response, 'next');
+    this.nextResource = this.hateoas.createReourceWithHeader(response, 'previous');
   }
 
   remove(beer: Beer) {
     this.beerService.removeBeer(beer)
       .subscribe(() => this.ngOnInit());
+  }
+
+  nextElements() {
+    this.beerService.findBeersUsingPaginationUri(this.nextResource.uri, this.DIFF.toString())
+      .subscribe(response => {
+        this.handleResponse(response);
+      });
+  }
+
+  previousElements() {
+    this.beerService.findBeersUsingPaginationUri(this.previousResource.uri, this.DIFF.toString())
+      .subscribe(response => {
+        this.handleResponse(response);
+      });
   }
 }

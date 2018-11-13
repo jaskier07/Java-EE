@@ -9,7 +9,7 @@
     <td></td>
     <td></td>
   </tr>
-  <tr *ngFor="let beer of beers | async">
+  <tr *ngFor="let beer of beers">
     <td>
       {{beer.id}}
     </td>
@@ -34,5 +34,6 @@
     </td>
   </tr>
 </table>
-
+<button class="btn btn-primary" (click)="nextElements()"><----</button>
+<button class="btn btn-primary" (click)="previousElements()">----></button>
 <button class="btn btn-primary" [routerLink]="['new']">Nowe piwo</button>

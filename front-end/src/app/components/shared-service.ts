@@ -16,7 +16,6 @@ export class SharedService {
     return this.http.get<Beer[]>(API_URI + 'beer');
   }
 
-
   findAllBreweries(): Observable<Brewery[]> {
     return this.http.get<Brewery[]>(API_URI + 'brewery');
   }

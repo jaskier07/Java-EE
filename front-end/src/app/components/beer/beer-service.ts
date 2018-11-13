@@ -1,4 +1,4 @@
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {Beer} from '../../model/beer';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
@@ -8,6 +8,17 @@ import {API_URI} from '../shared-service';
 @Injectable()
 export class BeerService {
   constructor(private http: HttpClient) {
+  }
+
+  findBeersUsingPagination(from: string, to: string, diff: string): Observable<HttpResponse<Beer[]>> {
+    const params = new HttpParams().set('from', from).set('to', to).set('diff', diff);
+    return this.http.get<Beer[]>(API_URI + 'beer/all', {params: params, observe: 'response'});
+  }
+
+  findBeersUsingPaginationUri(uri: string, diff: string): Observable<HttpResponse<Beer[]>> {
+    const params = new HttpParams().set('diff', diff);
+    const fineUri = uri.slice(1);
+    return this.http.get<Beer[]>(API_URI + fineUri, {params: params, observe: 'response'});
   }
 
   findBeer(id: number): Observable<HttpResponse<Beer>> {
