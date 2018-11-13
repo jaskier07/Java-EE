@@ -23,7 +23,7 @@ export class ViewBreweryComponent implements OnInit {
     this.breweryService.findBrewery(Number(this.utils.getIdFromRouter(this.route)))
       .subscribe(response => {
         this.brewery = response.body;
-        this.hateoas.printEntityHeaders(response);
+        this.hateoas.printLinks(response);
       });
   }
 }

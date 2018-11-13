@@ -46,7 +46,7 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
       this.breweryService.findBrewery(Number(breweryId))
         .subscribe(response => {
           this.brewery = response.body;
-          this.hateoas.printEntityHeaders(response);
+          this.hateoas.printLinks(response);
         });
     }
   }
@@ -63,7 +63,7 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
       this.breweryService.saveBrewery(this.brewery)
         .subscribe(response => {
             this.setInfoLabel(this.DATA_OK);
-            this.hateoas.printEntityHeaders(response);
+            this.hateoas.printLinks(response);
             this.router.navigateByUrl('');
           }, error => {
             this.setInfoLabel(this.DATA_ERROR);

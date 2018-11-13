@@ -28,7 +28,7 @@ export class EditBeerComponent extends EditEntity implements OnInit {
       this.beerService.findBeer(Number(beerId))
         .subscribe(response => {
           this.beer = response.body;
-          this.hateoas.printEntityHeaders(response);
+          this.hateoas.printLinks(response);
         });
     }
   }
@@ -38,7 +38,7 @@ export class EditBeerComponent extends EditEntity implements OnInit {
       this.beerService.saveBeer(this.beer)
         .subscribe(response => {
           this.setInfoLabel(this.DATA_OK);
-          this.hateoas.printEntityHeaders(response);
+          this.hateoas.printLinks(response);
           this.router.navigateByUrl('beers');
         }, error => {
           this.setInfoLabel(this.DATA_ERROR);

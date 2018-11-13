@@ -3,9 +3,11 @@ export class Resource {
   method: string;
   rel: string;
 
-  constructor(original: Resource) {
-    this.uri = original.uri;
-    this.method = original.method;
-    this.rel = original.rel;
-}
+
+  constructor(uri: string, rel: string, method?: string) {
+    this.uri = uri;
+    this.rel = rel;
+    this.method = method;
+  }
+
 }

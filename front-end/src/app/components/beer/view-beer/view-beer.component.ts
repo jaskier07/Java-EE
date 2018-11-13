@@ -25,7 +25,7 @@ export class ViewBeerComponent implements OnInit {
     this.beerService.findBeer(Number(this.utils.getIdFromRouter(this.route)))
       .subscribe(response => {
         this.beer = response.body;
-        this.hateoas.printEntityHeaders(response);
+        this.hateoas.printLinks(response);
       });
   }
 
