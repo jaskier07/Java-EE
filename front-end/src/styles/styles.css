@@ -1,0 +1,100 @@
+root {
+    display: block;
+}
+
+/* moje */
+.btn-primary {
+  background-color: darkorange;
+  border-color: darkorange;
+}
+
+.sidebar {
+  background-color: rgba(250, 149, 0, 0.27);
+  color: orange;
+  border-color: rgba(250, 149, 0, 0.27);
+}
+
+.navbar-brand, img{
+  width: auto !important;
+}
+
+/* nie moje */
+
+select[size].form-control {
+    height: 34px;
+}
+
+.ui-state-default .ui-icon {
+    background-image: url("#{resource['primefaces-bootstrap/images/ui-icons_333333_256x240.png']}");
+}
+
+.ui-chkbox .ui-widget {
+    margin: 5px 0px 0px 5px;
+}
+
+.ui-selectlistbox-filter-container .ui-selectlistbox-filter.ui-inputfield {
+    width: 100%;
+}
+
+.main .ui-selectlistbox-filter-container .ui-icon {
+    top: 6px;
+}
+
+tr.ui-selectlistbox-item td {
+    padding: 5px;
+}
+
+.main .ui-state-highlight {
+    background: #428bca linear-gradient(to bottom, #428bca, #327bba);
+}
+
+.ui-chkbox-icon.ui-icon.ui-icon-check.ui-c {
+    margin-top: -1px;
+    margin-left: -1px;
+}
+
+.main input.inplace-input {
+    width: 100%;
+    padding: 3px 4px 3px 9px;
+    border-radius: 0px;
+}
+
+.main .inplace-msg {
+    width: 100%;
+    margin-left: 0px;
+    border-radius: 0px;
+}
+
+#form\:msgs_container{
+    margin-top: 36px;
+}
+
+#form\:msgs_container .ui-growl-item-container {
+    background: #e07600f7;
+    opacity: 1;
+}
+
+.main .ui-state-error input.inplace-input {
+    border-color: red;
+}
+
+.main .ui-button.btn.btn-default{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.main .form-control {
+    padding: 6px 12px;
+}
+
+.main table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.main select[size].form-control{
+    height: auto;
+}
+
+.ml-1 {
+    margin-left: 1em;
+}

@@ -1,0 +1,10 @@
+/back-end/target/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+###Angular###
+/front-end/node_modules

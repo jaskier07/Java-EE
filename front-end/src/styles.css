@@ -1,0 +1,9 @@
+@import "../node_modules/bootstrap3/dist/css/bootstrap.min.css";
+@import "styles/dashboard.css";
+@import "styles/styles.css";
+
+.error {
+  padding: 15px;
+  border-radius: 5px;
+
+}

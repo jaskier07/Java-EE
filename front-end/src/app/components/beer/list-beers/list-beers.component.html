@@ -1,0 +1,38 @@
+<table class="table table-striped table-hover">
+  <tr>
+    <td>ID</td>
+    <td>Nazwa</td>
+    <td>Woltejdż</td>
+    <td>IBU</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr *ngFor="let beer of beers | async">
+    <td>
+      {{beer.id}}
+    </td>
+    <td>
+      {{beer.name}}
+    </td>
+    <td>
+      {{beer.voltage}}
+    </td>
+    <td>
+      {{beer.IBU}}
+    </td>
+    <td>
+    <td>
+      <button class="btn btn-default" [routerLink]="[beer.id]">Pokaż piwo</button>
+    </td>
+    <td>
+      <button class="btn btn-default" [routerLink]="[beer.id, 'edit']">Edytuj piwo</button>
+    </td>
+    <td>
+      <button class="btn btn-danger" (click)="remove(beer)">Usuń piwo</button>
+    </td>
+  </tr>
+</table>
+
+<button class="btn btn-primary" [routerLink]="['new']">Nowe piwo</button>

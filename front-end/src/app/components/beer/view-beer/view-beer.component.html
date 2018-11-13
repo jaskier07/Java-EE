@@ -1,0 +1,16 @@
+<table class="table table-striped" *ngIf="beer">
+  <tr>
+    <td>Nazwa</td>
+    <td>{{beer.name}}</td>
+  </tr>
+  <tr>
+    <td>Woltejdż</td>
+    <td>{{beer.voltage}}</td>
+  </tr>
+  <tr>
+    <td>IBU</td>
+    <td>{{beer.IBU}}</td>
+  </tr>
+</table>
+
+<button class="btn btn-default" [routerLink]="['/beers']">Powrót</button>

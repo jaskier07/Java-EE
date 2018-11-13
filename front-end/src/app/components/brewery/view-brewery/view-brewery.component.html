@@ -1,0 +1,32 @@
+<table class="table table-striped" *ngIf="brewery">
+  <tr>
+    <td>ID</td>
+    <td>{{brewery.id}}</td>
+  </tr>
+  <tr>
+    <td>Nazwa</td>
+    <td>{{brewery.name}}</td>
+  </tr>
+  <tr>
+    <td>Liczba pracowników</td>
+    <td>{{brewery.employees}}</td>
+  </tr>
+  <tr>
+    <td>Data utworzenia</td>
+    <td>{{brewery.dateEstablished}}</td>
+  </tr>
+  <tr>
+    <td>Piwa</td>
+    <td>
+      <table>
+        <tr *ngFor="let beer of brewery.beers">
+          <td>
+            {{beer.name}} [{{beer.voltage}}%]
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<button class="btn btn-default" routerLink="/">Powrót</button>

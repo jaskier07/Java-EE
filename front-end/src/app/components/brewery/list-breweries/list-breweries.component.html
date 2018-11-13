@@ -1,0 +1,47 @@
+<table class="table table-striped table-hover">
+  <tr>
+    <td>ID</td>
+    <td>Nazwa</td>
+    <td>Liczba pracowników</td>
+    <td>Piwa</td>
+    <td>Data utworzenia</td>
+    <td></td>
+    <td></td>
+    <td></td>
+
+  </tr>
+  <tr *ngFor="let brewery of breweries | async">
+    <td>
+      {{brewery.id}}
+    </td>
+    <td>
+      {{brewery.name}}
+    </td>
+    <td>
+      {{brewery.employees}}
+    </td>
+    <td>
+      <table>
+        <tr *ngFor="let beer of brewery.beers">
+          <td>
+            {{beer.name}} [{{beer.voltage}}%]
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td>
+      {{brewery.dateEstablished}}
+    </td>
+    <td>
+      <button class="btn btn-default" [routerLink]="['breweries', brewery.id]">Pokaż browar</button>
+    </td>
+    <td>
+      <button class="btn btn-default" [routerLink]="['breweries', brewery.id, 'edit']">Edytuj browar</button>
+    </td>
+    <td>
+      <button class="btn btn-danger" (click)="remove(brewery)">Usuń browar</button>
+    </td>
+  </tr>
+</table>
+
+<button class="btn btn-primary" routerLink="breweries/new">Nowy browar</button>

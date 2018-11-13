@@ -1,0 +1,32 @@
+<form #bookForm="ngForm" *ngIf="brewer">
+  <table class="table table-striped">
+    <tr>
+      <td>Nazwa:</td>
+      <td>
+        <input type="text" name="name" class="form-control" [(ngModel)]="brewer.name">
+      </td>
+    </tr>
+    <tr>
+      <td>Wiek:</td>
+      <td>
+        <input type="number" name="employees" class="form-control" [(ngModel)]="brewer.age">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Piwa:
+      </td>
+      <td>
+        <select [(ngModel)]="brewer.beers" name="beers" multiple class="form-control" [compareWith]="compareBrewers">
+          <option *ngFor="let beer of availableBeers" [ngValue]="beer">
+            {{beer.name}} [{{beer.voltage}}%]
+          </option>
+        </select>
+      </td>
+    </tr>
+  </table>
+  <div class="alert-danger error" #infoLabel >{{DATA_OK}}</div>
+  <br>
+  <button type="button" class="btn btn-primary" (click)="save()">Zapisz</button>
+  <button type="button" class="btn btn-default" routerLink="/brewers">Powrót</button>
+</form>

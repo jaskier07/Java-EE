@@ -1,0 +1,29 @@
+<table class="table table-striped" *ngIf="brewer">
+  <tr>
+    <td>ID</td>
+    <td>{{brewer.id}}</td>
+  </tr>
+  <tr>
+    <td>Imię</td>
+    <td>{{brewer.name}}</td>
+  </tr>
+  <tr>
+    <td>Wiek</td>
+    <td>{{brewer.age}}</td>
+  </tr>
+  <tr>
+    <td>Piwa</td>
+    <td>
+      <table>
+        <tr *ngFor="let beer of brewer.beers">
+          <td>
+            {{beer.name}} [{{beer.voltage}}%]
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<button class="btn btn-default" [routerLink]="['/brewers']">Powrót
+</button>

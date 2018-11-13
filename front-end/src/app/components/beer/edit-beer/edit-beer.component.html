@@ -1,0 +1,25 @@
+<form #bookForm="ngForm" *ngIf="beer">
+  <table class="table table-striped">
+    <tr>
+      <td>Nazwa:</td>
+      <td>
+        <input type="text" name="name" class="form-control" [(ngModel)]="beer.name">
+      </td>
+    </tr>
+    <tr>
+      <td>Woltejdż</td>
+      <td>
+        <input type="number" name="voltage" class="form-control" [(ngModel)]="beer.voltage">
+      </td>
+    </tr>
+    <tr>
+      <td>IBU</td>
+      <td>
+        <input type="number" name="ibu" class="form-control" [(ngModel)]="beer.IBU">
+      </td>
+    </tr>
+  </table>
+  <div class="alert-danger error" #infoLabel >{{DATA_OK}}</div>
+  <button type="button" class="btn btn-primary" (click)="save()">Zapisz</button>
+  <button type="button" class="btn btn-default" routerLink="/beers">Powrót</button>
+</form>
