@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Brewery} from '../../../model/brewery';
 import {BreweryService} from '../brewery-service';
 import {ActivatedRoute} from '@angular/router';

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Beer} from '../../../model/beer';
 import {BeerService} from '../beer-service';
 import {ActivatedRoute} from '@angular/router';
-import {EditEntity} from '../../edit-entity';
 import {AngularUtils} from '../../../utils/angular-utils';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
 

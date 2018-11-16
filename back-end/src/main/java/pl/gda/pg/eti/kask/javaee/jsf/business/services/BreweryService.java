@@ -7,7 +7,11 @@ import pl.gda.pg.eti.kask.javaee.jsf.utils.DateUtils;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 @ApplicationScoped
 public class BreweryService {

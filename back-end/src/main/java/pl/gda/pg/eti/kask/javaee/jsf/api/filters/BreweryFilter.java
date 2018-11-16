@@ -1,6 +1,5 @@
 package pl.gda.pg.eti.kask.javaee.jsf.api.filters;
 
-import pl.gda.pg.eti.kask.javaee.jsf.api.controllers.BeerController;
 import pl.gda.pg.eti.kask.javaee.jsf.api.controllers.BreweryController;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
@@ -15,7 +14,6 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Link;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 @IBreweryFilter

@@ -6,7 +6,6 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.core.Link;
-import javax.ws.rs.core.Response;
 import java.util.Set;
 
 public class FilterUtils {

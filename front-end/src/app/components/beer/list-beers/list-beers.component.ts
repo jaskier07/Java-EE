@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
 import {Beer} from '../../../model/beer';
 import {BeerService} from '../beer-service';
-import {SharedService} from '../../shared-service';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
 import {Resource} from '../../../utils/resource';
 

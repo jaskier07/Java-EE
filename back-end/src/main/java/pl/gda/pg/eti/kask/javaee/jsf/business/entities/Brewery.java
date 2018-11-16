@@ -1,9 +1,12 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(of = "id")

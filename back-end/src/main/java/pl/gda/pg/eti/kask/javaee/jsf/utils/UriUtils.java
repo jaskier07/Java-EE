@@ -21,7 +21,6 @@ public class UriUtils {
 
         public static URI uri(Class<?> clazz) {
             return UriBuilder.fromResource(clazz)
-                    .path(clazz)
                     .build();
         }
 }

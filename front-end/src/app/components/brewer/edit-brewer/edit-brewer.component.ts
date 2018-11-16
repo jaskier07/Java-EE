@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {Brewery} from '../../../model/brewery';
+import {Component, OnInit} from '@angular/core';
 import {Brewer} from '../../../model/brewer';
 import {EditEntity} from '../../edit-entity';
 import {Beer} from '../../../model/beer';

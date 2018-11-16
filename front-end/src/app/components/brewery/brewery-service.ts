@@ -3,7 +3,6 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Brewery} from '../../model/brewery';
 import {API_URI} from '../shared-service';
-import {Beer} from '../../model/beer';
 
 @Injectable()
 export class BreweryService {

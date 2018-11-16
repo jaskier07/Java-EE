@@ -1,7 +1,5 @@
 package pl.gda.pg.eti.kask.javaee.jsf.api;
 
-import lombok.AllArgsConstructor;
-
 public class Resource {
     private String uri;
     private String method;

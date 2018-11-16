@@ -3,7 +3,6 @@ package pl.gda.pg.eti.kask.javaee.jsf.api.filters;
 import pl.gda.pg.eti.kask.javaee.jsf.api.controllers.BrewerController;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
-import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.FilterUtils;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.UriUtils;
 
