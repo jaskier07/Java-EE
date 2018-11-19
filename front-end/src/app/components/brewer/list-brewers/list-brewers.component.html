@@ -41,3 +41,8 @@
 </table>
 
 <button class="btn btn-primary" [routerLink]="['new']">Dodaj piwowara</button>
+
+<div class="h3">Filtrowanie - wiek</div>
+od <input #inputFrom class="input-group-lg"> do <input #inputTo class="input-group-lg">
+<br/>
+<button class="btn btn-toolbar" (click)="filterByAge()">Filtruj</button>

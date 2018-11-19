@@ -36,4 +36,5 @@ export class BeerService {
       return this.http.post(API_URI + 'beer/', beer, {observe: 'response'});
     }
   }
+
 }

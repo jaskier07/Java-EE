@@ -11,6 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
 
@@ -33,6 +34,14 @@ public class BrewerController {
     @GET
     public Collection<Brewer> getAllBrewers() {
         return breweryService.findAllBrewers();
+    }
+
+
+    @GET
+    @Path("/filterByAge")
+    public Collection<Brewer> getBrewersByAge2(@QueryParam("from") String from,
+                                              @QueryParam("to") String to) {
+        return breweryService.findBrewersByAge(Integer.parseInt(from), Integer.parseInt(to));
     }
 
     @POST

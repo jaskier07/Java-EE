@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {API_URI} from '../shared-service';
 import {Brewer} from '../../model/brewer';
@@ -11,6 +11,12 @@ export class BrewerService {
 
   findBrewer(id: number): Observable<HttpResponse<Brewer>> {
     return this.http.get<Brewer>(API_URI + `brewer/${id}`, {observe: 'response'});
+  }
+
+  findBrewersByAge(from: number, to: number): Observable<Brewer[]> {
+    const params = new HttpParams().set('from', from.toString()).set('to', to.toString());
+    console.log(params);
+    return this.http.get<Brewer[]>(API_URI + 'brewer/filterByAge', {params: params});
   }
 
   removeBrewer(brewer: Brewer): Observable<any> {

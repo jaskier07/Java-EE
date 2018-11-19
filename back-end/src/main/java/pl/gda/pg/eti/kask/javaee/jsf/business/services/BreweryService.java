@@ -16,12 +16,11 @@ import java.util.Collection;
 
 @ApplicationScoped
 public class BreweryService {
-    private static final Long ID_FIRST_ELEMENT = 1L;
-    private static final int NEXT_ELEMENT = 1;
 
     @PersistenceContext
     EntityManager em;
 
+    /* brewers */
     public Brewer findBrewer(Long id) {
         return em.createQuery("select b from Brewer b where b.id = :id", Brewer.class)
                 .setParameter("id", id)
@@ -50,6 +49,7 @@ public class BreweryService {
         em.remove(brewer);
     }
 
+    /* breweries */
     public Brewery findBrewery(Long id) {
         return em.createQuery("select b from Brewery b where b.id = :id", Brewery.class)
                 .setParameter("id", id)
@@ -79,6 +79,7 @@ public class BreweryService {
         em.remove(brewery);
     }
 
+    /* beers */
     public Beer findBeer(Long id) {
         return em.createQuery("select b from Beer b where b.id = :id", Beer.class)
                 .setParameter("id", id)
@@ -106,5 +107,22 @@ public class BreweryService {
     public void removeBeer(Beer beer) {
         beer = em.merge(beer);
         em.remove(beer);
+    }
+
+    public Collection<Brewer> findBrewersByAge(int from, int to) {
+        return em.createQuery("select b from Brewer b where (b.age >= :from and b.age < :to)")
+                .setParameter("from", normalizeValue(from))
+                .setParameter("to", normalizeValue(to))
+                .getResultList();
+    }
+
+    private int normalizeValue(int value) {
+        if (value < 18) {
+            return 18;
+        } else if (value > 100) {
+            return 100;
+        } else {
+            return value;
+        }
     }
 }
