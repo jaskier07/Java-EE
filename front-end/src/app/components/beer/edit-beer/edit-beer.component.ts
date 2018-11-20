@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ErrorHandler, OnInit, ViewChild} from '@angular/core';
 import {Beer} from '../../../model/beer';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BeerService} from '../beer-service';
 import {EditEntity} from '../../edit-entity';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
+import 'rxjs/add/operator/catch';
 
 @Component({
   selector: 'app-edit-beer',
@@ -11,7 +12,12 @@ import {HateoasUtils} from '../../../utils/hateoas-utils';
   styleUrls: ['./edit-beer.component.css']
 })
 export class EditBeerComponent extends EditEntity implements OnInit {
+
   beer: Beer;
+  @ViewChild('errorName') errorName: any;
+  @ViewChild('errorIbu') errorIbu: any;
+  @ViewChild('errorVoltage') errorVoltage: any;
+
   private hateoas = new HateoasUtils();
 
   constructor(private beerService: BeerService,
@@ -34,23 +40,31 @@ export class EditBeerComponent extends EditEntity implements OnInit {
   }
 
   save() {
-    if (this.checkIfAllDataProvided()) {
       this.beerService.saveBeer(this.beer)
-        .subscribe(response => {
+        .subscribe((response: Response) => {
           this.setInfoLabel(this.DATA_OK);
           this.hateoas.printLinks(response);
           this.router.navigateByUrl('beers');
         }, error => {
+          this.handleError(error);
           this.setInfoLabel(this.DATA_ERROR);
         });
-    } else {
-      this.setInfoLabel(this.DATA_ERROR);
-    }
   }
 
-  checkIfAllDataProvided() {
-    return this.beer.voltage !== null
-      && this.beer.IBU !== null
-      && this.utils.notEmpty(this.beer.name);
+  handleError(error: any) {
+    this.errorName.nativeElement.textContent = '';
+    this.errorVoltage.nativeElement.textContent = '';
+    this.errorIbu.nativeElement.textContent = '';
+    console.log(error);
+
+    if (error.error['name']) {
+      this.errorName.nativeElement.textContent = error.error['name'];
+    }
+    if (error.error['voltage']) {
+      this.errorVoltage.nativeElement.textContent = error.error['voltage'];
+    }
+    if (error.error['IBU']) {
+      this.errorIbu.nativeElement.textContent = error.error['IBU'];
+    }
   }
 }

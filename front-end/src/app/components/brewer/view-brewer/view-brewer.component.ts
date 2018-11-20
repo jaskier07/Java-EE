@@ -25,6 +25,7 @@ export class ViewBrewerComponent implements OnInit {
       this.brewer = response.body;
       this.hateoas.printLinks(response);
     });
+
   }
 
 }

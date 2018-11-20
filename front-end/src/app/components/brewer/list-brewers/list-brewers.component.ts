@@ -14,8 +14,8 @@ export class ListBrewersComponent implements OnInit {
   private DEFAULT_FROM_VALUE = 0;
   private DEFAULT_TO_VALUE = 100;
 
-  @ViewChild("inputFrom") inputFrom: any;
-  @ViewChild("inputTo") inputTo: any;
+  @ViewChild('inputFrom') inputFrom: any;
+  @ViewChild('inputTo') inputTo: any;
 
   brewers: Observable<Brewer[]>;
 
@@ -36,10 +36,10 @@ export class ListBrewersComponent implements OnInit {
     let from = this.inputFrom.nativeElement.value;
     let to = this.inputTo.nativeElement.value;
 
-    if (isNaN(from)) {
+    if (!from || isNaN(from)) {
       from = this.DEFAULT_FROM_VALUE;
     }
-    if (isNaN(to)) {
+    if (!to || isNaN(to)) {
       to = this.DEFAULT_TO_VALUE;
     }
 

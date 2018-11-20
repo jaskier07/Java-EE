@@ -4,18 +4,21 @@
       <td>Nazwa:</td>
       <td>
         <input type="text" name="name" class="form-control" [(ngModel)]="brewery.name">
+        <div #errorName class="alert-danger error"></div>
       </td>
     </tr>
     <tr>
       <td>Liczba pracowników:</td>
       <td>
         <input type="number" name="employees" class="form-control" [(ngModel)]="brewery.employees">
+        <div #errorEmployees class="alert-danger error"></div>
       </td>
     </tr>
     <tr>
       <td>Data utworzenia (RRRR-MM-DD):</td>
       <td>
         <input type="text" #dateInput name="dateEstablished" class="form-control" [ngModel]=getDateEstablished()>
+        <div #errorDate class="alert-danger error"></div>
       </td>
     </tr>
     <tr>
@@ -28,6 +31,7 @@
             {{beer.name}} [{{beer.voltage}}%]
           </option>
         </select>
+        <div #errorBeers class="alert-danger error"></div>
       </td>
     </tr>
   </table>

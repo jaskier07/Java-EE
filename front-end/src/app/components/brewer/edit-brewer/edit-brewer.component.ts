@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Brewer} from '../../../model/brewer';
 import {EditEntity} from '../../edit-entity';
 import {Beer} from '../../../model/beer';
@@ -16,6 +16,10 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
 
   brewer: Brewer;
   availableBeers: Beer[];
+  @ViewChild('errorName') errorName: any;
+  @ViewChild('errorAge') errorAge: any;
+  @ViewChild('errorBeers') errorBeers: any;
+
   private hateoas = new HateoasUtils();
 
   constructor(private brewerService: BrewerService,
@@ -48,7 +52,6 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
     this.sharedService.findAllBeers()
       .subscribe(beers => {
         this.availableBeers = beers;
-        console.log(beers);
       });
   }
 
@@ -56,23 +59,28 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
     return brewer1 && brewer2 ? brewer1.id === brewer2.id : brewer1 === brewer2;
   }
 
-  checkIfAllDataProvided() {
-    return this.brewer.age !== null
-    && this.utils.notEmpty(this.brewer.name);
+
+  handleError(error: any) {
+    if (error.error['name']) {
+      this.errorName.nativeElement.textContent = error.error['name'];
+    }
+    if (error.error['age']) {
+      this.errorAge.nativeElement.textContent = error.error['age'];
+    }
+    if (error.error['beers']) {
+      this.errorBeers.nativeElement.textContent = error.error['beers'];
+    }
   }
 
   save() {
-    if (this.checkIfAllDataProvided()) {
       this.brewerService.saveBrewer(this.brewer)
         .subscribe(response => {
           this.setInfoLabel(this.DATA_OK);
           this.hateoas.printLinks(response);
           this.router.navigateByUrl('brewers');
         }, error => {
+          this.handleError(error);
           this.setInfoLabel(this.DATA_ERROR);
         });
-    } else {
-      this.setInfoLabel(this.DATA_ERROR);
-    }
   }
 }

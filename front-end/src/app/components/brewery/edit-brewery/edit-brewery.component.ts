@@ -22,6 +22,11 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
   availableBeers: Beer[];
   // @ViewChild('infoLabel') infoLabel;
   @ViewChild('dateInput') dateInput;
+  @ViewChild('errorName') errorName: any;
+  @ViewChild('errorEmployees') errorEmployees: any;
+  @ViewChild('errorDate') errorDate: any;
+  @ViewChild('errorBeers') errorBeers: any;
+
   private hateoas = new HateoasUtils();
 
   constructor(private breweryService: BreweryService,
@@ -36,6 +41,25 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
     this.initBrewery();
     this.initBeers();
     this.setInfoLabel(this.DATA_OK);
+  }
+
+  handleError(error: any) {
+    this.errorName.nativeElement.textContent = '';
+    this.errorEmployees.nativeElement.textContent = '';
+    this.errorDate.nativeElement.textContent = '';
+    this.errorBeers.nativeElement.textContent = '';
+    if (error.error['name']) {
+      this.errorName.nativeElement.textContent = error.error['name'];
+    }
+    if (error.error['employees']) {
+      this.errorEmployees.nativeElement.textContent = error.error['employees'];
+    }
+    if (error.error['dateEstablished']) {
+      this.errorDate.nativeElement.textContent = error.error['dateEstablished'];
+    }
+    if (error.error['beers']) {
+      this.errorBeers.nativeElement.textContent = error.error['beers'];
+    }
   }
 
   initBrewery() {
@@ -59,29 +83,26 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
   save() {
     const dateWithoutTime = this.dateInput.nativeElement.value;
     this.brewery.dateEstablished = this.getDateFromInput();
-    if (this.checkIfAllDataProvided()) {
-      this.breweryService.saveBrewery(this.brewery)
-        .subscribe(response => {
-            this.setInfoLabel(this.DATA_OK);
-            this.hateoas.printLinks(response);
-            this.router.navigateByUrl('');
-          }, error => {
-            this.setInfoLabel(this.DATA_ERROR);
-            this.brewery.dateEstablished = dateWithoutTime;
-          }
-        );
-    } else {
-      this.setInfoLabel(this.DATA_ERROR);
-      this.brewery.dateEstablished = dateWithoutTime;
-    }
+    this.breweryService.saveBrewery(this.brewery)
+      .subscribe(response => {
+          this.setInfoLabel(this.DATA_OK);
+          this.hateoas.printLinks(response);
+          this.router.navigateByUrl('');
+        }, error => {
+          this.setInfoLabel(this.DATA_ERROR);
+          this.handleError(error);
+          this.brewery.dateEstablished = dateWithoutTime;
+        }
+      );
   }
 
   getDateFromInput() {
     const inputValue = this.dateInput.nativeElement.value;
+    // return inputValue;
     if (this.validateDateFormat(inputValue)) {
       const date = new Date(inputValue + this.DATE_TIME);
       return (isNaN(date.getTime())) ? null : date;
-    } else    {
+    } else {
       return null;
     }
   }
@@ -89,13 +110,6 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
   validateDateFormat(date) {
     const validation = date.match(this.DATE_PATTERN);
     return validation;
-  }
-
-  checkIfAllDataProvided() {
-    return this.brewery.dateEstablished !== null
-      && this.utils.isEmpty(this.brewery.name)
-      && this.brewery.employees !== null
-      && this.brewery.beers !== null;
   }
 
   getDateEstablished() {

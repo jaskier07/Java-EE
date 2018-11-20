@@ -7,6 +7,8 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -49,8 +51,8 @@ public class BeerController {
 
     @POST
     public Response saveBeer(Beer beer) {
-        Long beerId = breweryService.saveBeer(beer);
-        return created(uri(BeerController.class, METHOD_GET_BEER, beerId)).build();
+            Long beerId = breweryService.saveBeer(beer);
+            return created(uri(BeerController.class, METHOD_GET_BEER, beerId)).build();
     }
 
     @GET

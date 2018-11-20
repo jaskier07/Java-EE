@@ -25,4 +25,5 @@ export class AngularUtils {
   isValidId(id) {
     return id || isNaN(Number(id)) || Number(id) === 0;
   }
+
 }

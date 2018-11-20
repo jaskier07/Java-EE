@@ -3,6 +3,7 @@ import {Beer} from '../../model/beer';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {API_URI} from '../shared-service';
+import {AngularUtils} from '../../utils/angular-utils';
 
 
 @Injectable()

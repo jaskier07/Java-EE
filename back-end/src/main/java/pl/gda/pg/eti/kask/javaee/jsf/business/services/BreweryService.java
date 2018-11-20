@@ -36,10 +36,10 @@ public class BreweryService {
     public Long saveBrewer(Brewer brewer) {
         if (brewer.getId() == null) {
             em.persist(brewer);
-            em.flush();
         } else {
             brewer = em.merge(brewer);
         }
+        em.flush();
         return brewer.getId();
     }
 
@@ -95,10 +95,10 @@ public class BreweryService {
     public Long saveBeer(Beer beer) {
         if (beer.getId() == null) {
             em.persist(beer);
-            em.flush();
         } else {
             beer = em.merge(beer);
         }
+        em.flush();
         return beer.getId();
     }
 

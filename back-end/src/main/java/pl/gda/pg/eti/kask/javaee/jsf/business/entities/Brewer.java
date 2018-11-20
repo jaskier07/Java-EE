@@ -44,20 +44,20 @@ public class Brewer {
     @GeneratedValue
     private Long id;
 
-    @NotBlank
-    @Size(min = 5, max = 80)
+    @NotBlank(message = "Podaj imię i nazwisko browarnika.")
+    @Size(min = 5, max = 80, message = "Imię i nazwisko browarnika musi łącznie zawierać od 5 do 80 znaków.")
     private String name;
 
-    @NotNull
-    @Min(value = 18)
-    @Max(value = 120)
+    @NotNull(message = "Podaj wiek.")
+    @Min(value = 18, message = "Wiek browarnika nie może być niższy niż 18 lat. Dzwonię na policję.")
+    @Max(value = 120, message = "Wiek browarnika nie może być wyższy niż 120 lat. Ludzie tak długo nie żyją.")
     private Integer age;
 
     @JoinColumn(name = "brewer_id")
     @OneToMany(cascade = { MERGE, REFRESH, DETACH})
     private Set<Beer> beers = new HashSet<>();
 
-    public Brewer(@NotBlank @Size(min = 5, max = 80) String name, @NotNull @Min(value = 10) @Max(value = 120) Integer age, Set<Beer> beers) {
+    public Brewer(String name, Integer age, Set<Beer> beers) {
         this.name = name;
         this.age = age;
         this.beers = beers;

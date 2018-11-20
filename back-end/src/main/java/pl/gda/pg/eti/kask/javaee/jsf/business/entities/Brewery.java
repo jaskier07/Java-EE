@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -44,21 +47,23 @@ public class Brewery {
     @GeneratedValue
     private Long id;
 
-    @NotBlank
-    @Size(min = 5, max = 80)
+    @NotBlank(message = "Podaj nazwę browaru.")
+    @Size(min = 5, max = 80, message = "Nazwa browaru powinna mieć od 5 do 80 znaków.")
     private String name;
 
-    @Min(value = 1)
+    @NotNull(message = "Podaj liczbę pracowników.")
+    @Min(value = 1, message = "Liczba pracowników browaru powinna wynosić co najmniej 1.")
     private Integer employees;
 
-    @Past
+    @NotNull(message = "Podaj datę w formacie RRRR-MM-DD")
+    @Past(message = "Data założenia browaru powinna być datą przeszłą.")
     private Date dateEstablished;
 
     @JoinColumn(name = "brewery_id")
     @OneToMany(cascade = { MERGE, REFRESH, DETACH })
     private Set<Beer> beers = new HashSet<>();
 
-    public Brewery(@NotBlank @Size(min = 5, max = 80) String name, @Min(value = 1) Integer employees, @Past Date dateEstablished, Set<Beer> beers) {
+    public Brewery(String name, Integer employees, Date dateEstablished, Set<Beer> beers) {
         this.name = name;
         this.employees = employees;
         this.dateEstablished = dateEstablished;
