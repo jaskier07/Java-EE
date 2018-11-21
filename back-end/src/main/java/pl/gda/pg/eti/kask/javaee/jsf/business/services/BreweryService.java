@@ -4,18 +4,17 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
 
-import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 import java.util.Collection;
 
 @ApplicationScoped
 public class BreweryService {
+    private static final int MATURE_AGE = 18;
+    private static final int MAX_AGE = 100;
 
     @PersistenceContext
     EntityManager em;
@@ -117,10 +116,10 @@ public class BreweryService {
     }
 
     private int normalizeValue(int value) {
-        if (value < 18) {
-            return 18;
-        } else if (value > 100) {
-            return 100;
+        if (value < MATURE_AGE) {
+            return MATURE_AGE;
+        } else if (value > MAX_AGE) {
+            return MAX_AGE;
         } else {
             return value;
         }

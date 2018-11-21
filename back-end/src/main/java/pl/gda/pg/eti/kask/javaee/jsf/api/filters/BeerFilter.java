@@ -23,6 +23,7 @@ import java.io.IOException;
 @Priority(Priorities.USER)
 @Log
 public class BeerFilter implements ContainerResponseFilter {
+    private static final int MIN_VALUE = 0;
 
     @Inject
     private BreweryService breweryService;
@@ -55,7 +56,7 @@ public class BeerFilter implements ContainerResponseFilter {
         int diff = (Integer.valueOf(requestContext.getUriInfo().getQueryParameters().getFirst("diff")));
         request.normalizeWithSize(beersSize);
 
-        if (request.getFrom() > 0) {
+        if (request.getFrom() > MIN_VALUE) {
            setPaginationPreviousElements(request, responseContext, diff);
         }
         if (request.getTo() + diff < beersSize) {
@@ -92,8 +93,8 @@ public class BeerFilter implements ContainerResponseFilter {
 
     private int findPreviousFrom(Pagination request, int diff) {
         int i = (request.getFrom() - diff);
-        if (i <= 0) {
-            return 0;
+        if (i <= MIN_VALUE) {
+            return MIN_VALUE;
         } else {
             return i;
         }

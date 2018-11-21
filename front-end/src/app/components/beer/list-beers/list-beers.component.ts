@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Beer} from '../../../model/beer';
 import {BeerService} from '../beer-service';
 import {HateoasUtils} from '../../../utils/hateoas-utils';

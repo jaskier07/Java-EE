@@ -61,6 +61,7 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
 
 
   handleError(error: any) {
+    this.clearValidationInfos();
     if (error.error['name']) {
       this.errorName.nativeElement.textContent = error.error['name'];
     }
@@ -72,7 +73,14 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
     }
   }
 
+  clearValidationInfos() {
+    this.errorName.nativeElement.textContent = '';
+    this.errorAge.nativeElement.textContent = '';
+    this.errorBeers.nativeElement.textContent = '';
+  }
+
   save() {
+    if (this.validateIntegerInput(this.brewer.age)) {
       this.brewerService.saveBrewer(this.brewer)
         .subscribe(response => {
           this.setInfoLabel(this.DATA_OK);
@@ -82,5 +90,8 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
           this.handleError(error);
           this.setInfoLabel(this.DATA_ERROR);
         });
+    } else {
+      this.errorAge.nativeElement.textContent = 'Podaj liczbę naturalną.';
+    }
   }
 }

@@ -1,4 +1,4 @@
-import {Component, ErrorHandler, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Beer} from '../../../model/beer';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BeerService} from '../beer-service';
@@ -40,6 +40,7 @@ export class EditBeerComponent extends EditEntity implements OnInit {
   }
 
   save() {
+    if (this.validateIntegerInput(this.beer.IBU)) {
       this.beerService.saveBeer(this.beer)
         .subscribe((response: Response) => {
           this.setInfoLabel(this.DATA_OK);
@@ -49,13 +50,14 @@ export class EditBeerComponent extends EditEntity implements OnInit {
           this.handleError(error);
           this.setInfoLabel(this.DATA_ERROR);
         });
+    } else {
+      this.errorIbu.nativeElement.textContent = 'Podaj liczbę naturalną.';
+    }
   }
 
+
   handleError(error: any) {
-    this.errorName.nativeElement.textContent = '';
-    this.errorVoltage.nativeElement.textContent = '';
-    this.errorIbu.nativeElement.textContent = '';
-    console.log(error);
+    this.clearValidationInfos();
 
     if (error.error['name']) {
       this.errorName.nativeElement.textContent = error.error['name'];
@@ -66,5 +68,11 @@ export class EditBeerComponent extends EditEntity implements OnInit {
     if (error.error['IBU']) {
       this.errorIbu.nativeElement.textContent = error.error['IBU'];
     }
+  }
+
+  clearValidationInfos() {
+    this.errorName.nativeElement.textContent = '';
+    this.errorVoltage.nativeElement.textContent = '';
+    this.errorIbu.nativeElement.textContent = '';
   }
 }

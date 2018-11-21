@@ -17,4 +17,9 @@ export abstract class EditEntity {
     }
   }
 
+
+  protected validateIntegerInput(value: number) {
+    return value.toString().match('^\\d+$');
+  }
+
 }

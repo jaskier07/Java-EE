@@ -81,19 +81,23 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
   }
 
   save() {
-    const dateWithoutTime = this.dateInput.nativeElement.value;
-    this.brewery.dateEstablished = this.getDateFromInput();
-    this.breweryService.saveBrewery(this.brewery)
-      .subscribe(response => {
-          this.setInfoLabel(this.DATA_OK);
-          this.hateoas.printLinks(response);
-          this.router.navigateByUrl('');
-        }, error => {
-          this.setInfoLabel(this.DATA_ERROR);
-          this.handleError(error);
-          this.brewery.dateEstablished = dateWithoutTime;
-        }
-      );
+    if (this.validateIntegerInput(this.brewery.employees)) {
+      const dateWithoutTime = this.dateInput.nativeElement.value;
+      this.brewery.dateEstablished = this.getDateFromInput();
+      this.breweryService.saveBrewery(this.brewery)
+        .subscribe(response => {
+            this.setInfoLabel(this.DATA_OK);
+            this.hateoas.printLinks(response);
+            this.router.navigateByUrl('');
+          }, error => {
+            this.setInfoLabel(this.DATA_ERROR);
+            this.handleError(error);
+            this.brewery.dateEstablished = dateWithoutTime;
+          }
+        );
+    } else {
+      this.errorEmployees.nativeElement.textContent = 'Podaj liczbę naturalną.';
+    }
   }
 
   getDateFromInput() {
