@@ -4,14 +4,14 @@
       <td>Nazwa:</td>
       <td>
         <input type="text" name="name" class="form-control" [(ngModel)]="brewer.name">
-        <div #errorName class="alert-danger error"></div>
+        <div #errorName></div>
       </td>
     </tr>
     <tr>
       <td>Wiek:</td>
       <td>
         <input type="number" name="employees" class="form-control" [(ngModel)]="brewer.age">
-        <div #errorAge class="alert-danger error"></div>
+        <div #errorAge></div>
       </td>
     </tr>
     <tr>
@@ -24,11 +24,11 @@
             {{beer.name}} [{{beer.voltage}}%]
           </option>
         </select>
-        <div #errorBeers class="alert-danger error"></div>
+        <div #errorBeers></div>
       </td>
     </tr>
   </table>
-  <div class="alert-danger error" #infoLabel >{{DATA_OK}}</div>
+  <div #infoLabel >{{DATA_OK}}</div>
   <br>
   <button type="button" class="btn btn-primary" (click)="save()">Zapisz</button>
   <button type="button" class="btn btn-default" routerLink="/brewers">Powrót</button>
