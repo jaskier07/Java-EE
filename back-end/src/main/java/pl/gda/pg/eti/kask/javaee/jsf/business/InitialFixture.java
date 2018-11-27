@@ -3,11 +3,14 @@ package pl.gda.pg.eti.kask.javaee.jsf.business;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
+import pl.gda.pg.eti.kask.javaee.jsf.business.entities.User;
+import pl.gda.pg.eti.kask.javaee.jsf.business.services.UserService;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.DateUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -19,6 +22,9 @@ public class InitialFixture {
 
     @PersistenceContext
     EntityManager em;
+
+    @Inject
+    UserService userService;
 
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
@@ -71,5 +77,12 @@ public class InitialFixture {
 
         em.persist(brewerJan);
         em.persist(brewerMarcin);
+
+        User admin = new User("admin", "admin", Arrays.asList("ADMIN", "USER"));
+        User user = new User("user", "user", Arrays.asList("USER"));
+
+        em.persist(admin);
+        em.persist(user);
+
     }
 }

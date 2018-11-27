@@ -1,10 +1,12 @@
 package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
 
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.Authorize;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.IBreweryFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -23,6 +25,8 @@ import static javax.ws.rs.core.Response.status;
 import static pl.gda.pg.eti.kask.javaee.jsf.utils.UriUtils.uri;
 
 @IBreweryFilter
+@ApplicationScoped
+@Authorize
 @Path("/brewery")
 public class BreweryController {
     private static final String METHOD_GET_BREWERY = "getBrewery";

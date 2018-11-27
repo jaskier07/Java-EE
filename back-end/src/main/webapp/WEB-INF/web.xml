@@ -5,4 +5,27 @@
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
+
+    <!--<login-config>-->
+        <!--<auth-method>BASIC</auth-method>-->
+        <!--<realm-name>api</realm-name>-->
+    <!--</login-config>-->
+
+    <!--<security-constraint>-->
+        <!--<web-resource-collection>-->
+            <!--<web-resource-name>API</web-resource-name>-->
+            <!--<url-pattern>/api/*</url-pattern>-->
+        <!--</web-resource-collection>-->
+        <!--<auth-constraint>-->
+            <!--<role-name>ADMIN</role-name>-->
+            <!--<role-name>USER</role-name>-->
+        <!--</auth-constraint>-->
+    <!--</security-constraint>-->
+
+    <security-role>
+        <role-name>ADMIN</role-name>
+    </security-role>
+    <security-role>
+        <role-name>USER</role-name>
+    </security-role>
 </web-app>

@@ -1,9 +1,13 @@
 package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.Authorize;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.IBrewerFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
+import javax.annotation.security.DenyAll;
+import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,6 +28,8 @@ import static pl.gda.pg.eti.kask.javaee.jsf.utils.UriUtils.uri;
 
 @IBrewerFilter
 @Path("/brewer")
+@ApplicationScoped
+@Authorize
 public class BrewerController {
     private static final String METHOD_GET_BREWER = "getBrewer";
     private static final String PATH_PARAM_BREWER = "brewer";
@@ -38,8 +44,9 @@ public class BrewerController {
 
 
     @GET
+    @DenyAll
     @Path("/filterByAge")
-    public Collection<Brewer> getBrewersByAge2(@QueryParam("from") String from,
+    public Collection<Brewer> getBrewersByAge(@QueryParam("from") String from,
                                               @QueryParam("to") String to) {
         return breweryService.findBrewersByAge(Integer.parseInt(from), Integer.parseInt(to));
     }
