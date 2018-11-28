@@ -4,6 +4,7 @@ import {BeerService} from '../beer-service';
 import {ActivatedRoute} from '@angular/router';
 import {AngularUtils} from '../../../utils/angular-utils';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
+import {HeaderUtils} from '../../../utils/header-utils';
 
 @Component({
   selector: 'app-view-beer',
@@ -11,6 +12,7 @@ import {HateoasUtils} from '../../../utils/hateoas-utils';
   styleUrls: ['./view-beer.component.css']
 })
 export class ViewBeerComponent implements OnInit {
+  private headerUtils = new HeaderUtils();
 
   beer: Beer;
   private utils = new AngularUtils();

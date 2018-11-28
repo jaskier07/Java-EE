@@ -7,6 +7,7 @@ import {BeerService} from '../../beer/beer-service';
 import {EditEntity} from '../../edit-entity';
 import {SharedService} from '../../shared-service';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
+import {HeaderUtils} from '../../../utils/header-utils';
 
 @Component({
   selector: 'app-edit-brewery',
@@ -18,6 +19,7 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
   private DATE_PATTERN = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
   private DATE_SEPARATOR = 'T';
 
+  private headerUtils = new HeaderUtils();
   brewery: Brewery;
   availableBeers: Beer[];
   // @ViewChild('infoLabel') infoLabel;
@@ -71,13 +73,17 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
         .subscribe(response => {
           this.brewery = response.body;
           this.hateoas.printLinks(response);
+        }, error => {
+          this.headerUtils.handleError(error);
         });
     }
   }
 
   initBeers() {
     this.sharedService.findAllBeers()
-      .subscribe(beers => this.availableBeers = beers);
+      .subscribe(beers => this.availableBeers = beers, error => {
+        this.headerUtils.handleError(error);
+      });
   }
 
   save() {
@@ -93,6 +99,8 @@ export class EditBreweryComponent extends EditEntity implements OnInit {
             this.setInfoLabel(this.DATA_ERROR);
             this.handleError(error);
             this.brewery.dateEstablished = dateWithoutTime;
+            this.headerUtils.handleError(error);
+
           }
         );
     } else {

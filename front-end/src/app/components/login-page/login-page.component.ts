@@ -10,19 +10,31 @@ import {SharedService} from '../shared-service';
 export class LoginPageComponent implements OnInit {
   @ViewChild('login') loginInput;
   @ViewChild('password') passwordInput;
+  @ViewChild('psswdOld') psswdOld;
+  @ViewChild('psswdNew') psswdNew;
+  loggedUser: string;
 
-  constructor(private sharedService: SharedService) { }
+  constructor(private sharedService: SharedService) {
+    if (sessionStorage.getItem('login')) {
+      this.loggedUser = sessionStorage.getItem('login');
+    } else {
+      this.loggedUser = undefined;
+    }
+  }
 
   ngOnInit() {
   }
 
+  logout() {
+    this.sharedService.logout();
+  }
+
   handleLoginInput() {
 
-     this.sharedService.login(this.loginInput.nativeElement.value, this.passwordInput.nativeElement.value)
-       .subscribe(response => {
-         console.log(response);
-       }, error => {
-         console.log(error);
-       });
-    }
+    this.sharedService.login(this.loginInput.nativeElement.value, this.passwordInput.nativeElement.value);
+  }
+
+  handleChangePassword() {
+    this.sharedService.changePassword(this.loggedUser, this.psswdOld.nativeElement.value, this.psswdNew.nativeElement.value);
+  }
 }

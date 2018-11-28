@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BrewerService} from '../brewer-service';
 import {SharedService} from '../../shared-service';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
+import {HeaderUtils} from '../../../utils/header-utils';
 
 @Component({
   selector: 'app-edit-brewer',
@@ -15,6 +16,7 @@ import {HateoasUtils} from '../../../utils/hateoas-utils';
 export class EditBrewerComponent extends EditEntity implements OnInit {
 
   brewer: Brewer;
+  private headerUtils = new HeaderUtils();
   availableBeers: Beer[];
   @ViewChild('errorName') errorName: any;
   @ViewChild('errorAge') errorAge: any;
@@ -29,7 +31,7 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
     super(route);
   }
 
-  ngOnInit(  ) {
+  ngOnInit() {
     this.initBrewer();
     this.initBeers();
     this.setInfoLabel(this.DATA_OK);
@@ -44,6 +46,8 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
         .subscribe(response => {
           this.brewer = response.body;
           this.hateoas.printLinks(response);
+        }, error => {
+          this.headerUtils.handleError(error);
         });
     }
   }
@@ -52,6 +56,8 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
     this.sharedService.findAllBeers()
       .subscribe(beers => {
         this.availableBeers = beers;
+      }, error => {
+        this.headerUtils.handleError(error);
       });
   }
 
@@ -89,6 +95,8 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
         }, error => {
           this.handleError(error);
           this.setInfoLabel(this.DATA_ERROR);
+          this.headerUtils.handleError(error);
+
         });
     } else {
       this.errorAge.nativeElement.textContent = 'Podaj liczbę naturalną.';

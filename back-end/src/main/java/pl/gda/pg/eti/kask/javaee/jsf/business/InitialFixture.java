@@ -4,7 +4,7 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.User;
-import pl.gda.pg.eti.kask.javaee.jsf.business.services.UserService;
+import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.DateUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -24,7 +24,7 @@ public class InitialFixture {
     EntityManager em;
 
     @Inject
-    UserService userService;
+    SecurityService userService;
 
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {

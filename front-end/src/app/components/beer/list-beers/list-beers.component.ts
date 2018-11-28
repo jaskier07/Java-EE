@@ -3,6 +3,7 @@ import {Beer} from '../../../model/beer';
 import {BeerService} from '../beer-service';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
 import {Resource} from '../../../utils/resource';
+import {HeaderUtils} from '../../../utils/header-utils';
 
 @Component({
   selector: 'app-list-beers',
@@ -11,6 +12,7 @@ import {Resource} from '../../../utils/resource';
 })
 export class ListBeersComponent implements OnInit {
 
+  private headerUtils = new HeaderUtils();
   private DIFF = 5;
   private hateoas = new HateoasUtils();
   from = 0;
@@ -38,13 +40,17 @@ export class ListBeersComponent implements OnInit {
 
   remove(beer: Beer) {
     this.beerService.removeBeer(beer)
-      .subscribe(() => this.ngOnInit());
+      .subscribe(() => this.ngOnInit(), error => {
+        this.headerUtils.handleError(error);
+      });
   }
 
   nextElements() {
     this.beerService.findBeersUsingPaginationUri(this.nextResource.uri, this.DIFF.toString())
       .subscribe(response => {
         this.handleResponse(response);
+      }, error => {
+        this.headerUtils.handleError(error);
       });
   }
 
@@ -52,6 +58,8 @@ export class ListBeersComponent implements OnInit {
     this.beerService.findBeersUsingPaginationUri(this.previousResource.uri, this.DIFF.toString())
       .subscribe(response => {
         this.handleResponse(response);
+      }, error => {
+        this.headerUtils.handleError(error);
       });
   }
 

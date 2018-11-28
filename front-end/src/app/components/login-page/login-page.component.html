@@ -1,8 +1,26 @@
-<p>
-  Zaloguj
-</p>
-  <form method="post"  (ngSubmit)="handleLoginInput()">
+<div *ngIf="loggedUser == undefined">
+  <p>
+    Zaloguj
+  </p>
+  <form method="post" (ngSubmit)="handleLoginInput()">
+    Login
     <input #login type="text" name="login">
+    Hasło
     <input #password type="password" name="login">
     <input type="submit">
-</form>
+  </form>
+</div>
+
+<div *ngIf="loggedUser != undefined">
+  Ustawienia konta {{loggedUser}}
+  <br>
+  Zmiana hasła
+  <form method="post" (ngSubmit)="handleChangePassword()">
+    Obecne hasło
+    <input #psswdOld type="text" name="login">
+    Nowe hasło
+    <input #psswdNew type="password" name="login">
+    <input type="submit">
+  </form>
+  <button  type="button" class="btn btn-primary" (click)="logout()">Wyloguj</button>
+</div>

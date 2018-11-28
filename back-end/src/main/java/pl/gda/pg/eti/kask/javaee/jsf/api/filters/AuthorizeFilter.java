@@ -27,30 +27,14 @@ import static javax.ws.rs.core.Response.status;
 @Provider
 @Authorize
 @Priority(Priorities.AUTHENTICATION)
-public class AuthorizeFilter implements ContainerRequestFilter, ContainerResponseFilter {
+public class AuthorizeFilter implements ContainerResponseFilter {
 
     @Context
     HttpServletRequest request;
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        try {
-            String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-            String token = authorizationHeader.substring("Bearer".length()).trim();
-
-            request.login(token, "");
-
-        } catch (Exception e) {
-            requestContext.abortWith(status(UNAUTHORIZED).build());
-        }
-    }
-
-    @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+
 
 
         responseContext.getHeaders().add("Access-Control-Expose-Headers", "*");

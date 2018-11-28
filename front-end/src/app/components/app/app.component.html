@@ -41,11 +41,11 @@
         <li>
           <a routerLink="/brewers">Piwowarzy</a>
         </li>
-        <li>
-          <a routerLink="/manage">Zarządzaj kontem</a>
-        </li>
-        <li>
+        <li *ngIf="loggedUser == undefined">
           <a routerLink="/login">Zaloguj</a>
+        </li>
+        <li *ngIf="loggedUser">
+          <a routerLink="/login">{{loggedUser}}</a>
         </li>
       </ul>
     </div>

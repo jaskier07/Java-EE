@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {Brewer} from '../../../model/brewer';
 import {BrewerService} from '../brewer-service';
 import {SharedService} from '../../shared-service';
+import {HeaderUtils} from '../../../utils/header-utils';
 
 @Component({
   selector: 'app-list-brewers',
@@ -14,6 +15,7 @@ export class ListBrewersComponent implements OnInit {
   private DEFAULT_FROM_VALUE = 0;
   private DEFAULT_TO_VALUE = 100;
 
+  private headerUtils = new HeaderUtils();
   @ViewChild('inputFrom') inputFrom: any;
   @ViewChild('inputTo') inputTo: any;
 
@@ -28,7 +30,9 @@ export class ListBrewersComponent implements OnInit {
 
   remove(brewer: Brewer) {
     this.brewerService.removeBrewer(brewer)
-      .subscribe(() => this.ngOnInit());
+      .subscribe(() => this.ngOnInit(), error => {
+        this.headerUtils.handleError(error);
+      });
   }
 
 

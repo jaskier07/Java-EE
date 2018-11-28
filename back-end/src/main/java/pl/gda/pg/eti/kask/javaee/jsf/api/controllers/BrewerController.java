@@ -4,11 +4,14 @@ import pl.gda.pg.eti.kask.javaee.jsf.api.filters.Authorize;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.IBrewerFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
+import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
 
 import javax.annotation.security.DenyAll;
 import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -37,9 +40,20 @@ public class BrewerController {
     @Inject
     BreweryService breweryService;
 
+
+    @Inject
+    SecurityService securityService;
+
+    @RequestScoped
+    @Inject
+    private HttpServletRequest request;
+
     @GET
     public Collection<Brewer> getAllBrewers() {
-        return breweryService.findAllBrewers();
+        if (securityService.checkPriviledge(request, "USER")) {
+            return breweryService.findAllBrewers();
+        }
+        return null;
     }
 
 
@@ -48,35 +62,50 @@ public class BrewerController {
     @Path("/filterByAge")
     public Collection<Brewer> getBrewersByAge(@QueryParam("from") String from,
                                               @QueryParam("to") String to) {
-        return breweryService.findBrewersByAge(Integer.parseInt(from), Integer.parseInt(to));
+        if (securityService.checkPriviledge(request, "USER")) {
+            return breweryService.findBrewersByAge(Integer.parseInt(from), Integer.parseInt(to));
+        }
+        return null;
     }
 
     @POST
     public Response saveBrewer(Brewer brewer) {
-        Long brewerId = breweryService.saveBrewer(brewer);
-        return created(uri(BrewerController.class, METHOD_GET_BREWER, brewerId)).build();
+        if (securityService.checkPriviledge(request, "ADMIN")) {
+            Long brewerId = breweryService.saveBrewer(brewer);
+            return created(uri(BrewerController.class, METHOD_GET_BREWER, brewerId)).build();
+        }
+        return null;
     }
 
     @GET
     @Path("/{brewer}")
     public Brewer getBrewer(@PathParam(PATH_PARAM_BREWER) Brewer brewer) {
-        return brewer;
+        if (securityService.checkPriviledge(request, "USER")) {
+            return brewer;
+        }
+        return null;
     }
 
     @DELETE
     @Path("/{brewer}")
     public Response deleteBrewer(@PathParam(PATH_PARAM_BREWER) Brewer brewer) {
-        breweryService.removeBrewer(brewer);
-        return noContent().build();
+        if (securityService.checkPriviledge(request, "ADMIN")) {
+            breweryService.removeBrewer(brewer);
+            return noContent().build();
+        }
+        return null;
     }
 
     @PUT
     @Path("/{brewer}")
     public Response updateBrewer(@PathParam(PATH_PARAM_BREWER) Brewer originalBrewer, Brewer updatedBrewer) {
-        if (!originalBrewer.getId().equals(updatedBrewer.getId())) {
-            return status(Status.BAD_REQUEST).build();
+        if (securityService.checkPriviledge(request, "ADMIN")) {
+            if (!originalBrewer.getId().equals(updatedBrewer.getId())) {
+                return status(Status.BAD_REQUEST).build();
+            }
+            breweryService.saveBrewer(updatedBrewer);
+            return ok().build();
         }
-        breweryService.saveBrewer(updatedBrewer);
-        return ok().build();
+        return null;
     }
 }
