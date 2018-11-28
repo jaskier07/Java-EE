@@ -5,16 +5,14 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business.services;
 
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.User;
+import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
 
-import javax.ejb.EJBAccessException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
-import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +62,7 @@ public class SecurityService {
 
     public UUID tryToLogUser(String login, String password) {
         User user = findUser(login);
-        if (user != null && user.getPassword().equals(password)) {
+        if (user != null && user.getPassword().equals(CryptUtils.sha256(password))) {
             UUID secret = UUID.randomUUID();
             loggedUsers.put(login, secret);
             return secret;
@@ -92,7 +90,7 @@ public class SecurityService {
         if (user == null) {
             return handleError();
         }
-        if (!user.getPassword().equals(oldPsswd)) {
+        if (!user.getPassword().equals(CryptUtils.sha256(oldPsswd))) {
             return handleError();
         }
         user.setPassword(newPsswd);
@@ -101,21 +99,14 @@ public class SecurityService {
     }
 
 
-//    @RolesAllowed(User.Roles.ADMIN)
     public List<User> findAllUsers() {
         return em.createNamedQuery(User.Queries.FIND_ALL, User.class).getResultList();
     }
 
-//    @RolesAllowed(User.Roles.ADMIN)
     public User findUser(String login) {
         return findUserByLogin(login);
     }
 
-//    @RolesAllowed({User.Roles.ADMIN, User.Roles.USER})
-//    public User findCurrentUser() {
-//        String login = sessionCtx.getCallerPrincipal().getName();
-//        return findUserByLogin(login);
-//    }
 
     private User findUserByLogin(String login) {
         TypedQuery<User> query = em.createNamedQuery(User.Queries.FIND_BY_LOGIN, User.class);

@@ -6,8 +6,6 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
 
-import javax.annotation.security.DenyAll;
-import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -53,19 +51,18 @@ public class BrewerController {
         if (securityService.checkPriviledge(request, "USER")) {
             return breweryService.findAllBrewers();
         }
-        return null;
+        throw new NullPointerException();
     }
 
 
     @GET
-    @DenyAll
     @Path("/filterByAge")
     public Collection<Brewer> getBrewersByAge(@QueryParam("from") String from,
                                               @QueryParam("to") String to) {
         if (securityService.checkPriviledge(request, "USER")) {
             return breweryService.findBrewersByAge(Integer.parseInt(from), Integer.parseInt(to));
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @POST
@@ -74,7 +71,7 @@ public class BrewerController {
             Long brewerId = breweryService.saveBrewer(brewer);
             return created(uri(BrewerController.class, METHOD_GET_BREWER, brewerId)).build();
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @GET
@@ -83,7 +80,7 @@ public class BrewerController {
         if (securityService.checkPriviledge(request, "USER")) {
             return brewer;
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @DELETE
@@ -93,7 +90,7 @@ public class BrewerController {
             breweryService.removeBrewer(brewer);
             return noContent().build();
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @PUT
@@ -106,6 +103,7 @@ public class BrewerController {
             breweryService.saveBrewer(updatedBrewer);
             return ok().build();
         }
-        return null;
+        throw new NullPointerException();
     }
+
 }

@@ -50,7 +50,7 @@ public class BreweryController {
         if (securityService.checkPriviledge(request, "USER")) {
             return breweryService.findAllBreweries();
         }
-        return null;
+        throw new NullPointerException();
     }
 
 
@@ -60,7 +60,7 @@ public class BreweryController {
             Long breweryId = breweryService.saveBrewery(brewery);
             return created(uri(BreweryController.class, METHOD_GET_BREWERY, breweryId)).build();
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @GET
@@ -69,7 +69,7 @@ public class BreweryController {
         if (securityService.checkPriviledge(request, "USER")) {
             return brewery;
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @DELETE
@@ -79,7 +79,7 @@ public class BreweryController {
             breweryService.removeBrewery(brewery);
             return noContent().build();
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @PUT
@@ -92,7 +92,7 @@ public class BreweryController {
             breweryService.saveBrewery(updatedBrewery);
             return ok().build();
         }
-        return null;
+        throw new NullPointerException();
     }
 }
 

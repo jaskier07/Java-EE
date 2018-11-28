@@ -33,7 +33,9 @@ export class SharedService {
       .subscribe(response => {
         this.headerUtils.saveSecretToSession(response);
         location.reload(true);
+        alert('Zalogowano!');
       }, error => {
+        alert('błąd zalogowania!');
         this.headerUtils.handleError(error);
       });
   }
@@ -45,7 +47,9 @@ export class SharedService {
       .subscribe(response => {
         sessionStorage.clear();
         location.reload(true);
+        alert('Wylogowano!');
       }, error => {
+        alert('błąd wylogowania!');
         this.headerUtils.handleError(error);
       });
   }
@@ -55,7 +59,10 @@ export class SharedService {
     return this.http.post(API_URI + 'login/password', '', {params: params, observe: 'response'})
       .subscribe(response => {
         this.headerUtils.saveSecretToSession(response);
+        alert('Zmieniono!');
+        location.reload(true);
       }, error => {
+        alert('błąd zmiany hasła! podaj poprawne!');
         this.headerUtils.handleError(error);
       });
   }

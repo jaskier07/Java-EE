@@ -8,8 +8,6 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
 
-import javax.annotation.security.PermitAll;
-import javax.ejb.EJBAccessException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -55,7 +53,7 @@ public class BeerController {
         if (securityService.checkPriviledge(httpRequest, "USER")) {
             return breweryService.findAllBeers();
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @GET
@@ -69,7 +67,7 @@ public class BeerController {
             pagination.normalizeWithSize(breweryService.findAllBeers().size());
             return new ArrayList<>(breweryService.findAllBeers()).subList(pagination.getFrom(), pagination.getTo());
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @POST
@@ -78,7 +76,7 @@ public class BeerController {
             Long beerId = breweryService.saveBeer(beer);
             return created(uri(BeerController.class, METHOD_GET_BEER, beerId)).build();
         }
-        return null;
+        throw new NullPointerException();
 
     }
 
@@ -88,7 +86,7 @@ public class BeerController {
         if (securityService.checkPriviledge(request, "USER")) {
             return beer;
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @DELETE
@@ -98,7 +96,7 @@ public class BeerController {
             breweryService.removeBeer(beer);
             return noContent().build();
         }
-        return null;
+        throw new NullPointerException();
     }
 
     @PUT
@@ -111,7 +109,7 @@ public class BeerController {
             breweryService.saveBeer(updatedBeer);
             return ok(updatedBeer).build();
         }
-        return null;
+        throw new NullPointerException();
     }
 }
 

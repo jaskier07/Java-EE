@@ -5,6 +5,7 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.User;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
+import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.DateUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -78,8 +79,8 @@ public class InitialFixture {
         em.persist(brewerJan);
         em.persist(brewerMarcin);
 
-        User admin = new User("admin", "admin", Arrays.asList("ADMIN", "USER"));
-        User user = new User("user", "user", Arrays.asList("USER"));
+        User admin = new User("admin", CryptUtils.sha256("admin"), Arrays.asList("ADMIN", "USER"));
+        User user = new User("user", CryptUtils.sha256("user"), Arrays.asList("USER"));
 
         em.persist(admin);
         em.persist(user);
