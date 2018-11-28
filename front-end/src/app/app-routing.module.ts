@@ -9,7 +9,6 @@ import {EditBeerComponent} from './components/beer/edit-beer/edit-beer.component
 import {ListBrewersComponent} from './components/brewer/list-brewers/list-brewers.component';
 import {ViewBrewerComponent} from './components/brewer/view-brewer/view-brewer.component';
 import {EditBrewerComponent} from './components/brewer/edit-brewer/edit-brewer.component';
-import {ManageAccountComponent} from './components/manage-account/manage-account.component';
 import {LoginPageComponent} from './components/login-page/login-page.component';
 
 const routes: Routes = [
@@ -28,7 +27,6 @@ const routes: Routes = [
   {path: 'brewers/:id', component: ViewBrewerComponent},
   {path: 'brewers/:id/edit', component: EditBrewerComponent},
 
-  {path: 'manage', component: ManageAccountComponent},
   {path: 'login', component: LoginPageComponent}
 ];
 

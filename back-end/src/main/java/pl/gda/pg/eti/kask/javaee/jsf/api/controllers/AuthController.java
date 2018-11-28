@@ -5,7 +5,7 @@
  */
 package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
-import pl.gda.pg.eti.kask.javaee.jsf.api.filters.Authorize;
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.AccessControl;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
 
 import javax.annotation.security.PermitAll;
@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
  */
 @RequestScoped
 @Path("/login")
-@Authorize
+@AccessControl
 public class AuthController {
 
     @Inject

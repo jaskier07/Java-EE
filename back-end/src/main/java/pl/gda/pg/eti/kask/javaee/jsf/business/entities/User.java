@@ -1,6 +1,5 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,11 +29,6 @@ public class User {
     public static class Queries {
         public static final String FIND_ALL = "User.findAll";
         public static final String FIND_BY_LOGIN = "User.findByLogin";
-    }
-
-    public static class Roles {
-        public static final String ADMIN = "ADMIN";
-        public static final String USER = "USER";
     }
 
     @Id

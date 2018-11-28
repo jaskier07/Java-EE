@@ -2,7 +2,7 @@ package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
 
 import pl.gda.pg.eti.kask.javaee.jsf.api.Pagination;
-import pl.gda.pg.eti.kask.javaee.jsf.api.filters.Authorize;
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.AccessControl;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.IBeerFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
@@ -33,7 +33,7 @@ import static pl.gda.pg.eti.kask.javaee.jsf.utils.UriUtils.uri;
 @IBeerFilter
 @Path("/beer")
 @ApplicationScoped
-@Authorize
+@AccessControl
 public class BeerController {
     public static final String METHOD_GET_BEER = "getBeer";
     private static final String PATH_PARAM_BEER = "beer";

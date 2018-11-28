@@ -1,6 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
-import pl.gda.pg.eti.kask.javaee.jsf.api.filters.Authorize;
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.AccessControl;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.IBrewerFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
@@ -30,7 +30,7 @@ import static pl.gda.pg.eti.kask.javaee.jsf.utils.UriUtils.uri;
 @IBrewerFilter
 @Path("/brewer")
 @ApplicationScoped
-@Authorize
+@AccessControl
 public class BrewerController {
     private static final String METHOD_GET_BREWER = "getBrewer";
     private static final String PATH_PARAM_BREWER = "brewer";
