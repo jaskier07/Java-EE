@@ -31,7 +31,7 @@ export class ListBrewersComponent implements OnInit {
   remove(brewer: Brewer) {
     this.brewerService.removeBrewer(brewer)
       .subscribe(() => this.ngOnInit(), error => {
-        this.headerUtils.handleError(error);
+        this.headerUtils.handleErrorNoText(error);
       });
   }
 

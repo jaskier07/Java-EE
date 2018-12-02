@@ -37,7 +37,17 @@ public class AuthController {
                           @QueryParam("password") String password,
                           @Context HttpServletRequest request) {
 
-        return userService.handleLogin(login, password);
+            return userService.handleLogin(login, password);
+    }
+
+    @POST
+    @Path("/register")
+    @PermitAll
+    public Response register(@QueryParam("login") String login,
+                          @QueryParam("password") String password,
+                          @Context HttpServletRequest request) {
+
+        return userService.handleRegister(login, password);
     }
 
     @POST

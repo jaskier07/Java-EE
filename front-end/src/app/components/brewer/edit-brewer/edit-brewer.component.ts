@@ -47,7 +47,7 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
           this.brewer = response.body;
           this.hateoas.printLinks(response);
         }, error => {
-          this.headerUtils.handleError(error);
+          this.headerUtils.handleErrorNoText(error);
         });
     }
   }
@@ -57,7 +57,7 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
       .subscribe(beers => {
         this.availableBeers = beers;
       }, error => {
-        this.headerUtils.handleError(error);
+        this.headerUtils.handleErrorNoText(error);
       });
   }
 
@@ -95,7 +95,7 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
         }, error => {
           this.handleError(error);
           this.setInfoLabel(this.DATA_ERROR);
-          this.headerUtils.handleError(error);
+          this.headerUtils.handleErrorNoText(error);
 
         });
     } else {

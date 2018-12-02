@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BeerService} from '../beer/beer-service';
 import {SharedService} from '../shared-service';
+import {AccountService} from './account-service';
 
 @Component({
   selector: 'app-login-page',
@@ -10,11 +11,13 @@ import {SharedService} from '../shared-service';
 export class LoginPageComponent implements OnInit {
   @ViewChild('login') loginInput;
   @ViewChild('password') passwordInput;
+  @ViewChild('loginRegister') loginRegisterInput;
+  @ViewChild('passwordRegister') passwordRegisterInput;
   @ViewChild('psswdOld') psswdOld;
   @ViewChild('psswdNew') psswdNew;
   loggedUser: string;
 
-  constructor(private sharedService: SharedService) {
+  constructor(private accountService: AccountService) {
     if (sessionStorage.getItem('login')) {
       this.loggedUser = sessionStorage.getItem('login');
     } else {
@@ -26,15 +29,18 @@ export class LoginPageComponent implements OnInit {
   }
 
   logout() {
-    this.sharedService.logout();
+    this.accountService.logout();
   }
 
   handleLoginInput() {
-
-    this.sharedService.login(this.loginInput.nativeElement.value, this.passwordInput.nativeElement.value);
+    this.accountService.login(this.loginInput.nativeElement.value, this.passwordInput.nativeElement.value);
   }
 
   handleChangePassword() {
-    this.sharedService.changePassword(this.loggedUser, this.psswdOld.nativeElement.value, this.psswdNew.nativeElement.value);
+    this.accountService.changePassword(this.loggedUser, this.psswdOld.nativeElement.value, this.psswdNew.nativeElement.value);
+  }
+
+  handleRegisterInput() {
+    this.accountService.register(this.loginRegisterInput.nativeElement.value, this.passwordRegisterInput.nativeElement.value);
   }
 }

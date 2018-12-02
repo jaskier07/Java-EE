@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.gda.pg.eti.kask.javaee.jsf.business.entities.queries.BeerQueries;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,12 +24,9 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @NamedQueries(
-        @NamedQuery(name = Beer.Queries.FIND_ALL, query = "select b from Beer b")
+        @NamedQuery(name = BeerQueries.FIND_ALL, query = "select b from Beer b")
 )
 public class Beer {
-    public static class Queries {
-        public static final String FIND_ALL = "BEER_FIND_ALL";
-    }
 
     @Id
     @GeneratedValue

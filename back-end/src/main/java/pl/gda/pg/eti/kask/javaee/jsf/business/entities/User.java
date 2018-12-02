@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.gda.pg.eti.kask.javaee.jsf.business.entities.queries.UserQueries;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -21,15 +22,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @NamedQueries({
-        @NamedQuery(name = User.Queries.FIND_ALL, query = "SELECT u FROM User u"),
-        @NamedQuery(name = User.Queries.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = :login")
-
+        @NamedQuery(name = UserQueries.FIND_ALL, query = "SELECT u FROM User u"),
+        @NamedQuery(name = UserQueries.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = :login"),
+        @NamedQuery(name = UserQueries.FIND_ALL_LOGINS, query = "SELECT u.login FROM User u")
 })
 public class User {
-    public static class Queries {
-        public static final String FIND_ALL = "User.findAll";
-        public static final String FIND_BY_LOGIN = "User.findByLogin";
-    }
 
     @Id
     @GeneratedValue

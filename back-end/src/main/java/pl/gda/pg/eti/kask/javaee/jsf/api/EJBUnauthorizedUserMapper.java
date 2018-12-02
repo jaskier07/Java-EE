@@ -11,6 +11,6 @@ public class EJBUnauthorizedUserMapper implements ExceptionMapper<NullPointerExc
 
     @Override
     public Response toResponse(NullPointerException exception) {
-        return Response.status(FORBIDDEN).header("forbidden2", true).build();
+        return Response.status(FORBIDDEN).header("forbidden", true).build();
     }
 }

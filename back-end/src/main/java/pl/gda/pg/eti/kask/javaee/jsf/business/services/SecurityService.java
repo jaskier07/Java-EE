@@ -5,6 +5,7 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business.services;
 
 import pl.gda.pg.eti.kask.javaee.jsf.business.entities.User;
+import pl.gda.pg.eti.kask.javaee.jsf.business.entities.queries.UserQueries;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -14,6 +15,7 @@ import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +28,13 @@ public class SecurityService {
     //BASE64(s3cr3t) = czNjcjN0
     public static final String HEADER_LOGIN = "login";
     public static final String HEADER_SECRET = "secret";
-    public static final String SIGNING_KEY = "czNjcjN0";
     private Map<String, UUID> loggedUsers = new HashMap<>();
 
     @PersistenceContext
     EntityManager em;
 
     public boolean checkPriviledge(String login, UUID uuid, String expectedRole) {
-        if (!loggedUsers.containsKey(login)) {
+        if (!checkIfUserLoggedIn(login)) {
           return  handleErrorBoolean();
         }
         if (!loggedUsers.get(login).equals(uuid)) {
@@ -56,10 +57,6 @@ public class SecurityService {
        return checkPriviledge(login, uuid, expectedRole);
     }
 
-    public boolean checkIfUserLoggedIn(String login) {
-        return loggedUsers.containsKey(login);
-    }
-
     public UUID tryToLogUser(String login, String password) {
         User user = findUser(login);
         if (user != null && user.getPassword().equals(CryptUtils.sha256(password))) {
@@ -72,7 +69,7 @@ public class SecurityService {
     }
 
     public Response handleLogin(String login, String password) {
-        if (loggedUsers.containsKey(login)) {
+        if (checkIfUserLoggedIn(login)) {
             return Response.ok().header(AUTHORIZATION, "OK").header("login", login).header("secret", loggedUsers.get(login)).build();
         }
 
@@ -85,6 +82,16 @@ public class SecurityService {
     }
 
     @Transactional
+    public Response handleRegister(String login, String password) {
+        List<String> users = findAllUserLogins();
+        if (users.contains(login)) {
+            return Response.status(Response.Status.CONFLICT).header("notUniqueLogin", true).build();
+        }
+        em.persist(new User(login, CryptUtils.sha256(password), Arrays.asList("USER")));
+        return Response.ok().status(Response.Status.CREATED).build();
+    }
+
+    @Transactional
     public Response changePassword(String login, String oldPsswd, String newPsswd) {
         User user = findUser(login);
         if (user == null) {
@@ -93,27 +100,10 @@ public class SecurityService {
         if (!user.getPassword().equals(CryptUtils.sha256(oldPsswd))) {
             return handleError();
         }
-        user.setPassword(newPsswd);
+        user.setPassword(CryptUtils.sha256(newPsswd));
         em.merge(user);
         return Response.ok().build();
     }
-
-
-    public List<User> findAllUsers() {
-        return em.createNamedQuery(User.Queries.FIND_ALL, User.class).getResultList();
-    }
-
-    public User findUser(String login) {
-        return findUserByLogin(login);
-    }
-
-
-    private User findUserByLogin(String login) {
-        TypedQuery<User> query = em.createNamedQuery(User.Queries.FIND_BY_LOGIN, User.class);
-        query.setParameter("login", login);
-        return query.getSingleResult();
-    }
-
 
     public Response logout(String login, String secret) {
         if (!loggedUsers.containsKey(login)) {
@@ -125,6 +115,27 @@ public class SecurityService {
         }
         loggedUsers.remove(login);
         return Response.ok().build();
+    }
+
+
+    public List<User> findAllUsers() {
+        return em.createNamedQuery(UserQueries.FIND_ALL, User.class).getResultList();
+    }
+
+    public User findUser(String login) {
+        return findUserByLogin(login);
+    }
+
+    private List<String> findAllUserLogins() {
+        return em.createNamedQuery(UserQueries.FIND_ALL_LOGINS, String.class)
+                .getResultList();
+    }
+
+
+    private User findUserByLogin(String login) {
+        TypedQuery<User> query = em.createNamedQuery(UserQueries.FIND_BY_LOGIN, User.class);
+        query.setParameter("login", login);
+        return query.getSingleResult();
     }
 
     private void throwError() {
@@ -140,4 +151,9 @@ public class SecurityService {
         throwError();
         return false;
     }
+
+    public boolean checkIfUserLoggedIn(String login) {
+        return loggedUsers.containsKey(login);
+    }
+
 }

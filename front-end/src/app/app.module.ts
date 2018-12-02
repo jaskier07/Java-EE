@@ -18,6 +18,7 @@ import {BrewerService} from './components/brewer/brewer-service';
 import {ViewBrewerComponent} from './components/brewer/view-brewer/view-brewer.component';
 import {EditBrewerComponent} from './components/brewer/edit-brewer/edit-brewer.component';
 import {LoginPageComponent} from './components/login-page/login-page.component';
+import {AccountService} from './components/login-page/account-service';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {LoginPageComponent} from './components/login-page/login-page.component';
     BreweryService,
     BeerService,
     SharedService,
-    BrewerService
+    BrewerService,
+    AccountService
   ],
   bootstrap: [AppComponent]
 })

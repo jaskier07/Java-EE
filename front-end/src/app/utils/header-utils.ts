@@ -8,30 +8,49 @@ export class HeaderUtils {
     console.log(response.headers);
     console.log(response.headers.get('secret'));
     if (response.headers.get('secret')) {
+      console.log('zapisuje sekret: ' + response.headers.get('secret'));
       sessionStorage.setItem('secret', response.headers.get('secret'));
+    } else {
+      console.log('nie dostalem sekretu');
     }
     if (response.headers.get('login')) {
+      console.log('zapisuje login: ' + response.headers.get('login'));
       sessionStorage.setItem('login', response.headers.get('login'));
     }
-    if (response.headers.get('forbidden2')) {
+    if (response.headers.get('forbidden')) {
       alert('BRAK UPRAWNIEN!');
     }
   }
 
-  handleError(response) {
+  handleError(response, text: String) {
     console.log(response);
-    if (response.headers.get('forbidden2')) {
-      alert('BRAK UPRAWNIEN!');
-      sessionStorage.removeItem('forbidden2');
+    let errorFound = false;
+
+    if (response.headers.get('forbidden')) {
+      alert(text + ' BRAK UPRAWNIEŃ!');
+      sessionStorage.removeItem('forbidden');
+      errorFound = true;
     }
+
+    if (response.headers.get('notUniqueLogin')) {
+      alert(text + ' Ten login jest już zajęty. Prosimy o większą oryginalność.');
+      errorFound = true;
+    }
+    if (!errorFound) {
+      alert(text);
+    }
+  }
+
+  handleErrorNoText(response) {
+    console.log(response);
+    this.handleError(response, 'Wystąpił błąd.');
   }
 
   setSecretAsHeaders() {
     if (sessionStorage.getItem('login') && sessionStorage.getItem('secret')) {
       return new HttpHeaders()
         .set('login', sessionStorage.getItem('login'))
-        .set('secret', sessionStorage.getItem('secret'))
-        ;
+        .set('secret', sessionStorage.getItem('secret'));
     }
     return new HttpHeaders();
   }

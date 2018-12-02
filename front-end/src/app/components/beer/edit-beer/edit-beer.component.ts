@@ -38,7 +38,7 @@ export class EditBeerComponent extends EditEntity implements OnInit {
           this.beer = response.body;
           this.hateoas.printLinks(response);
         }, error => {
-          this.headerUtils.handleError(error);
+          this.headerUtils.handleErrorNoText(error);
         });
     }
   }
@@ -53,7 +53,7 @@ export class EditBeerComponent extends EditEntity implements OnInit {
         }, error => {
           this.handleError(error);
           this.setInfoLabel(this.DATA_ERROR);
-          this.headerUtils.handleError(error);
+          this.headerUtils.handleErrorNoText(error);
         });
     } else {
       this.errorIbu.nativeElement.textContent = 'Podaj liczbę naturalną.';

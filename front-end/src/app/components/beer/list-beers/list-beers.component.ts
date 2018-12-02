@@ -41,7 +41,7 @@ export class ListBeersComponent implements OnInit {
   remove(beer: Beer) {
     this.beerService.removeBeer(beer)
       .subscribe(() => this.ngOnInit(), error => {
-        this.headerUtils.handleError(error);
+        this.headerUtils.handleErrorNoText(error);
       });
   }
 
@@ -50,7 +50,7 @@ export class ListBeersComponent implements OnInit {
       .subscribe(response => {
         this.handleResponse(response);
       }, error => {
-        this.headerUtils.handleError(error);
+        this.headerUtils.handleErrorNoText(error);
       });
   }
 
@@ -59,7 +59,7 @@ export class ListBeersComponent implements OnInit {
       .subscribe(response => {
         this.handleResponse(response);
       }, error => {
-        this.headerUtils.handleError(error);
+        this.headerUtils.handleErrorNoText(error);
       });
   }
 

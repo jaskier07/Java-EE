@@ -27,7 +27,7 @@ export class ViewBreweryComponent implements OnInit {
         this.brewery = response.body;
         this.hateoas.printLinks(response);
       }, error => {
-        this.headerUtils.handleError(error);
+        this.headerUtils.handleErrorNoText(error);
       });
   }
 }

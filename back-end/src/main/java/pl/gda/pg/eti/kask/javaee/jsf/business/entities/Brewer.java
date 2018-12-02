@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.gda.pg.eti.kask.javaee.jsf.business.entities.queries.BrewerQueries;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,12 +31,9 @@ import static javax.persistence.CascadeType.REFRESH;
 @Setter
 @NoArgsConstructor
 @NamedQueries(
-        @NamedQuery(name = Brewer.Queries.FIND_ALL, query = "select b from Brewer b")
+        @NamedQuery(name = BrewerQueries.FIND_ALL, query = "select b from Brewer b")
 )
 public class Brewer {
-    public static class Queries {
-        public static final String FIND_ALL = "BREWER_FIND_ALL";
-    }
 
     @Id
     @GeneratedValue
