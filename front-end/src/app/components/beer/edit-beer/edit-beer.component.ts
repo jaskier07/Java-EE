@@ -5,6 +5,7 @@ import {BeerService} from '../beer-service';
 import {EditEntity} from '../../edit-entity';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
 import 'rxjs/add/operator/catch';
+import {HeaderUtils} from '../../../utils/header-utils';
 
 @Component({
   selector: 'app-edit-beer',
@@ -12,6 +13,7 @@ import 'rxjs/add/operator/catch';
   styleUrls: ['./edit-beer.component.css']
 })
 export class EditBeerComponent extends EditEntity implements OnInit {
+  private headerUtils = new HeaderUtils();
 
   beer: Beer;
   @ViewChild('errorName') errorName: any;
@@ -35,6 +37,8 @@ export class EditBeerComponent extends EditEntity implements OnInit {
         .subscribe(response => {
           this.beer = response.body;
           this.hateoas.printLinks(response);
+        }, error => {
+          this.headerUtils.handleErrorNoText(error);
         });
     }
   }
@@ -49,6 +53,7 @@ export class EditBeerComponent extends EditEntity implements OnInit {
         }, error => {
           this.handleError(error);
           this.setInfoLabel(this.DATA_ERROR);
+          this.headerUtils.handleErrorNoText(error);
         });
     } else {
       this.errorIbu.nativeElement.textContent = 'Podaj liczbę naturalną.';

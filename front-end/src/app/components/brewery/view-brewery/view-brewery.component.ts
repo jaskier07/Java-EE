@@ -4,6 +4,7 @@ import {BreweryService} from '../brewery-service';
 import {ActivatedRoute} from '@angular/router';
 import {AngularUtils} from '../../../utils/angular-utils';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
+import {HeaderUtils} from '../../../utils/header-utils';
 
 @Component({
   selector: 'app-view-brewery',
@@ -16,6 +17,7 @@ export class ViewBreweryComponent implements OnInit {
   private utils = new AngularUtils();
   private hateoas = new HateoasUtils();
 
+  private headerUtils = new HeaderUtils();
   constructor(private breweryService: BreweryService,
               private route: ActivatedRoute) { }
 
@@ -24,6 +26,8 @@ export class ViewBreweryComponent implements OnInit {
       .subscribe(response => {
         this.brewery = response.body;
         this.hateoas.printLinks(response);
+      }, error => {
+        this.headerUtils.handleErrorNoText(error);
       });
   }
 }

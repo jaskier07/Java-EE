@@ -11,6 +11,7 @@ export class HateoasUtils {
   private PREVIOUS_BEER = 'previous';
   private NEXT_BEER = 'next';
 
+
   printLinks(response) {
     console.log(this.createResources(response));
   }

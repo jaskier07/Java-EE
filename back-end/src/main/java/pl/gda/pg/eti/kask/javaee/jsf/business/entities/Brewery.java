@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.gda.pg.eti.kask.javaee.jsf.business.entities.queries.BreweryQueries;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,12 +32,9 @@ import static javax.persistence.CascadeType.REFRESH;
 @Setter
 @NoArgsConstructor
 @NamedQueries(
-        @NamedQuery(name = Brewery.Queries.FIND_ALL, query = "select b from Brewery b")
+        @NamedQuery(name = BreweryQueries.FIND_ALL, query = "select b from Brewery b")
 )
 public class Brewery {
-    public static class Queries {
-        public static final String FIND_ALL = "BREWERY_FIND_ALL";
-    }
 
     @Id
     @GeneratedValue
