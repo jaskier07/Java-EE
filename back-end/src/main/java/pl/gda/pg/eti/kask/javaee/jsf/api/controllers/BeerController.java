@@ -2,11 +2,12 @@ package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
 
 import pl.gda.pg.eti.kask.javaee.jsf.api.Pagination;
-import pl.gda.pg.eti.kask.javaee.jsf.api.filters.AccessControl;
-import pl.gda.pg.eti.kask.javaee.jsf.api.filters.IBeerFilter;
-import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.AccessControl;
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.IBeerFilter;
+import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.UserAllowed;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
-import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
+import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
@@ -49,8 +50,9 @@ public class BeerController {
     private HttpServletRequest request;
 
     @GET
+    @UserAllowed
     public Collection<Beer> getAllBeers(HttpServletRequest httpRequest) {
-        if (securityService.checkPriviledge(httpRequest, "USER")) {
+        if (securityService.checkPrivilege(httpRequest, "USER")) {
             return breweryService.findAllBeers();
         }
         throw new NullPointerException();
@@ -58,11 +60,12 @@ public class BeerController {
 
     @GET
     @Path("/all")
+    @UserAllowed
     public Collection<Beer> getBeersUsingPagination(
             @QueryParam("from") int from,
             @QueryParam("to") int to,
             @QueryParam("diff") int diff) {
-        if (securityService.checkPriviledge(request, "USER")) {
+        if (securityService.checkPrivilege(request, "USER")) {
             Pagination pagination = new Pagination(from, to);
             pagination.normalizeWithSize(breweryService.findAllBeers().size());
             return new ArrayList<>(breweryService.findAllBeers()).subList(pagination.getFrom(), pagination.getTo());
@@ -71,9 +74,10 @@ public class BeerController {
     }
 
     @POST
+    @UserAllowed
     public Response saveBeer(Beer beer) {
-        if (securityService.checkPriviledge(request, "ADMIN")) {
-            Long beerId = breweryService.saveBeer(beer);
+        if (securityService.checkPrivilege(request, "ADMIN")) {
+            Long beerId = breweryService.saveBeer(beer, request);
             return created(uri(BeerController.class, METHOD_GET_BEER, beerId)).build();
         }
         throw new NullPointerException();
@@ -82,17 +86,20 @@ public class BeerController {
 
     @GET
     @Path("/{beer}")
+    @UserAllowed
     public Beer getBeer(@PathParam(PATH_PARAM_BEER) Beer beer) {
-        if (securityService.checkPriviledge(request, "USER")) {
+        if (securityService.checkPrivilege(request, "USER")) {
             return beer;
         }
         throw new NullPointerException();
-    }
 
+    }
+;
     @DELETE
     @Path("/{beer}")
+    @UserAllowed
     public Response deleteBeer(@PathParam(PATH_PARAM_BEER) Beer beer) {
-        if (securityService.checkPriviledge(request, "ADMIN")) {
+        if (securityService.checkPrivilege(request, "ADMIN")) {
             breweryService.removeBeer(beer);
             return noContent().build();
         }
@@ -101,12 +108,13 @@ public class BeerController {
 
     @PUT
     @Path("/{beer}")
+    @UserAllowed
     public Response updateBeer(@PathParam(PATH_PARAM_BEER) Beer originalBeer, Beer updatedBeer) {
-        if (securityService.checkPriviledge(request, "ADMIN")) {
+        if (securityService.checkPrivilege(request, "ADMIN")) {
             if (!originalBeer.getId().equals(updatedBeer.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }
-            breweryService.saveBeer(updatedBeer);
+            breweryService.saveBeer(updatedBeer, request);
             return ok(updatedBeer).build();
         }
         throw new NullPointerException();

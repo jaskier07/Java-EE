@@ -1,8 +1,8 @@
 package pl.gda.pg.eti.kask.javaee.jsf.utils;
 
 import pl.gda.pg.eti.kask.javaee.jsf.api.controllers.BeerController;
-import pl.gda.pg.eti.kask.javaee.jsf.api.filters.HttpVerbs;
-import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.enums.HttpVerbs;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
 
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.core.Link;

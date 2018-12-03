@@ -1,10 +1,13 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business;
 
-import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
-import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewer;
-import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Brewery;
-import pl.gda.pg.eti.kask.javaee.jsf.business.entities.User;
-import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
+import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.ExpectedRole;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewer;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewery;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Role;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.User;
+import pl.gda.pg.eti.kask.javaee.jsf.business.security.Permission;
+import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.DateUtils;
 
@@ -29,29 +32,40 @@ public class InitialFixture {
 
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        Beer piwo1 = new Beer("Książęce Czerwony Lager", 1.7, 11);
-        Beer piwo2 = new Beer("Książęce Złote", 2.7, 21);
-        Beer piwo3 = new Beer("Książęce Niebieskie", 3.7, 3);
-        Beer piwo4 = new Beer("Książęce Seledynowe", 4.7, 41);
-        Beer piwo5 = new Beer("Książęce Oberżyna", 5.1, 51);
-        Beer piwo6 = new Beer("Harnaś", 5.7, 81);
-        Beer piwo7 = new Beer("Specjal", 6.5, 23);
-        Beer piwo8 = new Beer("Tyskie Jasne Pełne", 4.9, 12);
-        Beer piwo9 = new Beer("Książęce Złote Pszeniczne", 5.2, 14);
-        Beer piwo10 = new Beer("Braniewo Chmielowe", 5.0, 21);
-        Beer piwo11 = new Beer("Specjal X", 8.0, 32);
-        Beer piwo12 = new Beer("Książęce IPA", 4.0, 1);
-        Beer piwo13 = new Beer("Specjal bursztynowy", 4.5, 13);
-        Beer piwo14 = new Beer("Specjal specjalny", 3.5, 113);
-        Beer piwo15 = new Beer("Specjal Mocne", 2.5, 53);
-        Beer piwo16 = new Beer("Specjal Cienias", 1.5, 13);
-        Beer piwo17 = new Beer("Miodna Pszczółka", 1.5, 13);
+        Role roleUser = createUserRole();
+        Role roleAdmin = createAdminRole();
+        em.persist(roleAdmin);
+        em.persist(roleUser);
 
-        Brewery specialBrewery = new Brewery("Browar Specjal", 23, DateUtils.parseDate("2015-01-01"), new HashSet<>(Arrays.asList(piwo7, piwo13)));
-        Brewery tyskieBrewery = new Brewery("Browar w Tychach", 432, DateUtils.parseDate("1410-07-15"), new HashSet<>(Arrays.asList(piwo1, piwo2)));
+        User admin = new User("admin", CryptUtils.sha256("admin"), roleAdmin);
+        User user = new User("user", CryptUtils.sha256("user"), roleUser);
+        em.persist(admin);
+        em.persist(user);
 
-        Brewer brewerJan = new Brewer("Jan Kowalski", 24, new HashSet<>(Arrays.asList(piwo7, piwo1, piwo2, piwo13)));
-        Brewer brewerMarcin = new Brewer("Marcin Płażyński", 56, new HashSet<>(Arrays.asList(piwo16, piwo15, piwo14)));
+        // wszystkie książęce o tyskie są piwami usera, pozostałe admina
+        Beer piwo1 = new Beer("Książęce Czerwony Lager", 1.7, 11, user);
+        Beer piwo2 = new Beer("Książęce Złote", 2.7, 21, user);
+        Beer piwo3 = new Beer("Książęce Niebieskie", 3.7, 3, user);
+        Beer piwo4 = new Beer("Książęce Seledynowe", 4.7, 41, user);
+        Beer piwo5 = new Beer("Książęce Oberżyna", 5.1, 51, user);
+        Beer piwo6 = new Beer("Harnaś", 5.7, 81, admin);
+        Beer piwo7 = new Beer("Specjal", 6.5, 23, admin);
+        Beer piwo8 = new Beer("Tyskie Jasne Pełne", 4.9, 12, user);
+        Beer piwo9 = new Beer("Książęce Złote Pszeniczne", 5.2, 14, admin);
+        Beer piwo10 = new Beer("Braniewo Chmielowe", 5.0, 21, admin);
+        Beer piwo11 = new Beer("Specjal X", 8.0, 32, admin);
+        Beer piwo12 = new Beer("Książęce IPA", 4.0, 1, user);
+        Beer piwo13 = new Beer("Specjal bursztynowy", 4.5, 13, admin);
+        Beer piwo14 = new Beer("Specjal specjalny", 3.5, 113, admin);
+        Beer piwo15 = new Beer("Specjal Mocne", 2.5, 53, admin);
+        Beer piwo16 = new Beer("Specjal Cienias", 1.5, 13, admin);
+        Beer piwo17 = new Beer("Miodna Pszczółka", 1.5, 13, admin);
+
+        Brewery specialBrewery = new Brewery("Browar Specjal", 23, DateUtils.parseDate("2015-01-01"), new HashSet<>(Arrays.asList(piwo7, piwo13)), user);
+        Brewery tyskieBrewery = new Brewery("Browar w Tychach", 432, DateUtils.parseDate("1410-07-15"), new HashSet<>(Arrays.asList(piwo1, piwo2)), admin);
+
+        Brewer brewerJan = new Brewer("Jan Kowalski", 24, new HashSet<>(Arrays.asList(piwo7, piwo1, piwo2, piwo13)), user);
+        Brewer brewerMarcin = new Brewer("Marcin Płażyński", 56, new HashSet<>(Arrays.asList(piwo16, piwo15, piwo14)), admin);
 
         em.persist(piwo1);
         em.persist(piwo2);
@@ -79,11 +93,52 @@ public class InitialFixture {
         em.persist(brewerJan);
         em.persist(brewerMarcin);
 
-        User admin = new User("admin", CryptUtils.sha256("admin"), Arrays.asList("ADMIN", "USER"));
-        User user = new User("user", CryptUtils.sha256("user"), Arrays.asList("USER"));
 
-        em.persist(admin);
-        em.persist(user);
+    }
 
+    private Role createUserRole() {
+        Role user = new Role();
+        user.setDeleteBeer(Permission.DENIED);
+        user.setDeleteBrewer(Permission.DENIED);
+        user.setDeleteBrewery(Permission.DENIED);
+        user.setGetAllBeers(Permission.GRANTED);
+        user.setGetAllBreweries(Permission.GRANTED);
+        user.setGetAllBrewers(Permission.GRANTED);
+        user.setGetBeer(Permission.GRANTED);
+        user.setGetBeersUsingPagination(Permission.GRANTED);
+        user.setGetBrewer(Permission.GRANTED);
+        user.setGetBrewery(Permission.GRANTED);
+        user.setSaveBeer(Permission.GRANTED);
+        user.setSaveBrewer(Permission.GRANTED);
+        user.setSaveBrewery(Permission.GRANTED);
+        user.setUpdateBeer(Permission.IF_OWNER);
+        user.setUpdateBrewer(Permission.IF_OWNER);
+        user.setUpdateBrewery(Permission.IF_OWNER);
+        user.setGetBrewersByAge(Permission.GRANTED);
+        user.setRoleName(ExpectedRole.USER);
+        return user;
+    }
+
+    private Role createAdminRole() {
+        Role admin = new Role();
+        admin.setDeleteBeer(Permission.GRANTED);
+        admin.setDeleteBrewer(Permission.GRANTED);
+        admin.setDeleteBrewery(Permission.GRANTED);
+        admin.setGetAllBeers(Permission.GRANTED);
+        admin.setGetAllBreweries(Permission.GRANTED);
+        admin.setGetAllBrewers(Permission.GRANTED);
+        admin.setGetBeer(Permission.GRANTED);
+        admin.setGetBeersUsingPagination(Permission.GRANTED);
+        admin.setGetBrewer(Permission.GRANTED);
+        admin.setGetBrewery(Permission.GRANTED);
+        admin.setSaveBeer(Permission.GRANTED);
+        admin.setSaveBrewer(Permission.GRANTED);
+        admin.setSaveBrewery(Permission.GRANTED);
+        admin.setUpdateBeer(Permission.GRANTED);
+        admin.setUpdateBrewer(Permission.GRANTED);
+        admin.setUpdateBrewery(Permission.GRANTED);
+        admin.setGetBrewersByAge(Permission.GRANTED);
+        admin.setRoleName(ExpectedRole.ADMIN);
+        return admin;
     }
 }

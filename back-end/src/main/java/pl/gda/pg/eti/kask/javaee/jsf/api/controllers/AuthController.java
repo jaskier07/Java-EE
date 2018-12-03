@@ -5,8 +5,8 @@
  */
 package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
-import pl.gda.pg.eti.kask.javaee.jsf.api.filters.AccessControl;
-import pl.gda.pg.eti.kask.javaee.jsf.business.services.SecurityService;
+import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.AccessControl;
+import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
 
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.RequestScoped;

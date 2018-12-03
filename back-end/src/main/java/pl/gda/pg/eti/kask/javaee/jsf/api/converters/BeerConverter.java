@@ -1,6 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.jsf.api.converters;
 
-import pl.gda.pg.eti.kask.javaee.jsf.business.entities.Beer;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
 import javax.ws.rs.ext.Provider;
