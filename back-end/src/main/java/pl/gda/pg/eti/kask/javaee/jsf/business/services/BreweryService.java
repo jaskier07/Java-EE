@@ -1,7 +1,6 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business.services;
 
-import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.OwnerOrAdminAllowed;
-import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.UserAllowed;
+import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.CheckPrivelege;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewery;
@@ -10,6 +9,7 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.model.queries.BrewerQueries;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.queries.BreweryQueries;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,22 +26,30 @@ public class BreweryService {
     @PersistenceContext
     EntityManager em;
 
+    @RequestScoped
+    @Inject
+    private HttpServletRequest request;
+
+
     @Inject
     private UserService userService;
 
     /* brewers */
+    @CheckPrivelege
     public Brewer findBrewer(Long id) {
-        return em.createQuery(BrewerQueries.FIND_ONE, Brewer.class)
+        return em.createNamedQuery(BrewerQueries.FIND_ONE, Brewer.class)
                 .setParameter("id", id)
                 .getSingleResult();
     }
 
+    @CheckPrivelege
     public Collection<Brewer> findAllBrewers() {
         TypedQuery<Brewer> query = em.createNamedQuery(BrewerQueries.FIND_ALL, Brewer.class);
         return query.getResultList();
     }
 
     @Transactional
+    @CheckPrivelege
     public Long saveBrewer(Brewer brewer, HttpServletRequest request) {
         if (brewer.getId() == null) {
             brewer.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
@@ -54,12 +62,14 @@ public class BreweryService {
     }
 
     @Transactional
+    @CheckPrivelege
     public void removeBrewer(Brewer brewer) {
         brewer = em.merge(brewer);
         em.remove(brewer);
     }
 
     /* breweries */
+    @CheckPrivelege
     public Brewery findBrewery(Long id) {
         return em.createNamedQuery(BreweryQueries.FIND_ONE, Brewery.class)
                 .setParameter("id", id)
@@ -67,12 +77,14 @@ public class BreweryService {
     }
 
 
+    @CheckPrivelege
     public Collection<Brewery> findAllBreweries() {
         TypedQuery<Brewery> query = em.createNamedQuery(BreweryQueries.FIND_ALL, Brewery.class);
         return query.getResultList();
     }
 
     @Transactional
+    @CheckPrivelege
     public Long saveBrewery(Brewery brewery, HttpServletRequest request) {
         if (brewery.getId() == null) {
             brewery.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
@@ -85,28 +97,29 @@ public class BreweryService {
     }
 
     @Transactional
+    @CheckPrivelege
     public void removeBrewery(Brewery brewery) {
         brewery = em.merge(brewery);
         em.remove(brewery);
     }
 
     /* beers */
-    @UserAllowed
+    @CheckPrivelege
     public Beer findBeer(Long id) {
         return em.createNamedQuery(BeerQueries.FIND_ONE, Beer.class)
                 .setParameter("id", id)
                 .getSingleResult();
     }
 
-    @UserAllowed
+    @CheckPrivelege
     public Collection<Beer> findAllBeers() {
         return em.createNamedQuery(BeerQueries.FIND_ALL, Beer.class)
                 .getResultList();
     }
 
     @Transactional
-    @UserAllowed
-    public Long saveBeer(Beer beer, HttpServletRequest request) {
+    @CheckPrivelege
+    public Long saveBeer(Beer beer) {
         if (beer.getId() == null) {
             beer.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
             em.persist(beer);
@@ -119,12 +132,13 @@ public class BreweryService {
 
 
     @Transactional
-    @UserAllowed
+    @CheckPrivelege
     public void removeBeer(Beer beer) {
         beer = em.merge(beer);
         em.remove(beer);
     }
 
+    @CheckPrivelege
     public Collection<Brewer> findBrewersByAge(int from, int to) {
         return em.createNamedQuery(BrewerQueries.FIND_BY_AGE, Brewer.class)
                 .setParameter("from", normalizeValue(from))

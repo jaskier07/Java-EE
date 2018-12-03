@@ -2,7 +2,6 @@ package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.AccessControl;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.IBrewerFilter;
-import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.UserAllowed;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
@@ -47,30 +46,26 @@ public class BrewerController {
     private HttpServletRequest request;
 
     @GET
-    @UserAllowed
     public Collection<Brewer> getAllBrewers() {
-        if (securityService.checkPrivilege(request, "USER")) {
+        if (securityService.checkPrivilege()) {
             return breweryService.findAllBrewers();
         }
         throw new NullPointerException();
     }
 
-
     @GET
     @Path("/filterByAge")
-    @UserAllowed
     public Collection<Brewer> getBrewersByAge(@QueryParam("from") String from,
                                               @QueryParam("to") String to) {
-        if (securityService.checkPrivilege(request, "USER")) {
+        if (securityService.checkPrivilege()) {
             return breweryService.findBrewersByAge(Integer.parseInt(from), Integer.parseInt(to));
         }
         throw new NullPointerException();
     }
 
     @POST
-    @UserAllowed
     public Response saveBrewer(Brewer brewer) {
-        if (securityService.checkPrivilege(request, "ADMIN")) {
+        if (securityService.checkPrivilege()) {
             Long brewerId = breweryService.saveBrewer(brewer, request);
             return created(uri(BrewerController.class, METHOD_GET_BREWER, brewerId)).build();
         }
@@ -79,9 +74,8 @@ public class BrewerController {
 
     @GET
     @Path("/{brewer}")
-    @UserAllowed
     public Brewer getBrewer(@PathParam(PATH_PARAM_BREWER) Brewer brewer) {
-        if (securityService.checkPrivilege(request, "USER")) {
+        if (securityService.checkPrivilege()) {
             return brewer;
         }
         throw new NullPointerException();
@@ -89,9 +83,8 @@ public class BrewerController {
 
     @DELETE
     @Path("/{brewer}")
-    @UserAllowed
     public Response deleteBrewer(@PathParam(PATH_PARAM_BREWER) Brewer brewer) {
-        if (securityService.checkPrivilege(request, "ADMIN")) {
+        if (securityService.checkPrivilege()) {
             breweryService.removeBrewer(brewer);
             return noContent().build();
         }
@@ -100,9 +93,8 @@ public class BrewerController {
 
     @PUT
     @Path("/{brewer}")
-    @UserAllowed
     public Response updateBrewer(@PathParam(PATH_PARAM_BREWER) Brewer originalBrewer, Brewer updatedBrewer) {
-        if (securityService.checkPrivilege(request, "ADMIN")) {
+        if (securityService.checkPrivilege()) {
             if (!originalBrewer.getId().equals(updatedBrewer.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }

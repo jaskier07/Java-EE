@@ -10,6 +10,7 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.security.Permission;
 import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.DateUtils;
+import pl.gda.pg.eti.kask.javaee.jsf.utils.UserUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
@@ -32,8 +33,8 @@ public class InitialFixture {
 
     @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        Role roleUser = createUserRole();
-        Role roleAdmin = createAdminRole();
+        Role roleUser = UserUtils.createUserRole();
+        Role roleAdmin = UserUtils.createAdminRole();
         em.persist(roleAdmin);
         em.persist(roleUser);
 
@@ -96,41 +97,4 @@ public class InitialFixture {
 
     }
 
-    private Role createUserRole() {
-        Role user = new Role();
-        user.setRemoveBeer(Permission.IF_OWNER);
-        user.setRemoveBrewer(Permission.DENIED);
-        user.setRemoveBrewery(Permission.DENIED);
-        user.setFindAllBeers(Permission.GRANTED);
-        user.setFindAllBreweries(Permission.GRANTED);
-        user.setFindAllBrewers(Permission.GRANTED);
-        user.setFindBeer(Permission.GRANTED);
-        user.setFindBrewer(Permission.GRANTED);
-        user.setFindBrewery(Permission.GRANTED);
-        user.setSaveBeer(Permission.GRANTED);
-        user.setSaveBrewer(Permission.GRANTED);
-        user.setSaveBrewery(Permission.GRANTED);
-        user.setFindBrewersByAge(Permission.GRANTED);
-        user.setRoleName(ExpectedRole.USER);
-        return user;
-    }
-
-    private Role createAdminRole() {
-        Role admin = new Role();
-        admin.setRemoveBeer(Permission.GRANTED);
-        admin.setRemoveBrewer(Permission.GRANTED);
-        admin.setRemoveBrewery(Permission.GRANTED);
-        admin.setFindAllBeers(Permission.GRANTED);
-        admin.setFindAllBreweries(Permission.GRANTED);
-        admin.setFindAllBrewers(Permission.GRANTED);
-        admin.setFindBeer(Permission.GRANTED);
-        admin.setFindBrewer(Permission.GRANTED);
-        admin.setFindBrewery(Permission.GRANTED);
-        admin.setSaveBeer(Permission.GRANTED);
-        admin.setSaveBrewer(Permission.GRANTED);
-        admin.setSaveBrewery(Permission.GRANTED);
-        admin.setFindBrewersByAge(Permission.GRANTED);
-        admin.setRoleName(ExpectedRole.ADMIN);
-        return admin;
-    }
 }

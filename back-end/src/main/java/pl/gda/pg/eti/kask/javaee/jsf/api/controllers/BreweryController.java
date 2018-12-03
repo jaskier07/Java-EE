@@ -3,7 +3,6 @@ package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.AccessControl;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.IBreweryFilter;
-import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.UserAllowed;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
@@ -47,9 +46,8 @@ public class BreweryController {
     private HttpServletRequest request;
 
     @GET
-    @UserAllowed
     public Collection<Brewery> getAllBreweries() {
-        if (securityService.checkPrivilege(request, "USER")) {
+        if (securityService.checkPrivilege()) {
             return breweryService.findAllBreweries();
         }
         throw new NullPointerException();
@@ -57,9 +55,8 @@ public class BreweryController {
 
 
     @POST
-    @UserAllowed
     public Response saveBrewery(Brewery brewery) {
-        if (securityService.checkPrivilege(request, "ADMIN")) {
+        if (securityService.checkPrivilege()) {
             Long breweryId = breweryService.saveBrewery(brewery, request);
             return created(uri(BreweryController.class, METHOD_GET_BREWERY, breweryId)).build();
         }
@@ -68,9 +65,8 @@ public class BreweryController {
 
     @GET
     @Path("/{brewery}")
-    @UserAllowed
     public Brewery getBrewery(@PathParam(PATH_PARAM_BREWERY) Brewery brewery) {
-        if (securityService.checkPrivilege(request, "USER")) {
+        if (securityService.checkPrivilege()) {
             return brewery;
         }
         throw new NullPointerException();
@@ -78,9 +74,8 @@ public class BreweryController {
 
     @DELETE
     @Path("/{brewery}")
-    @UserAllowed
     public Response deleteBrewery(@PathParam(PATH_PARAM_BREWERY) Brewery brewery) {
-        if (securityService.checkPrivilege(request, "ADMIN")) {
+        if (securityService.checkPrivilege()) {
             breweryService.removeBrewery(brewery);
             return noContent().build();
         }
@@ -89,9 +84,8 @@ public class BreweryController {
 
     @PUT
     @Path("/{brewery}")
-    @UserAllowed
     public Response updateBrewery(@PathParam(PATH_PARAM_BREWERY) Brewery originalBrewery, Brewery updatedBrewery) {
-        if (securityService.checkPrivilege(request, "ADMIN")) {
+        if (securityService.checkPrivilege()) {
             if (!originalBrewery.getId().equals(updatedBrewery.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }

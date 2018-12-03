@@ -7,6 +7,7 @@ package pl.gda.pg.eti.kask.javaee.jsf.business.security;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.User;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.UserService;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
+import pl.gda.pg.eti.kask.javaee.jsf.utils.UserUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
@@ -38,7 +39,7 @@ public class SecurityService {
     @Inject
     private UserService userService;
 
-    public boolean checkPrivilege(String login, UUID uuid, String expectedRole) {
+    public boolean checkPrivilege(String login, UUID uuid) {
         if (!checkIfUserLoggedIn(login)) {
             return handleErrorBoolean();
         }
@@ -48,31 +49,31 @@ public class SecurityService {
         return true;
     }
 
-    public boolean checkPrivilege(HttpServletRequest httpRequest, String expectedRole) {
+    public boolean checkPrivilege() {
         String login = userService.getLoginFromRequest(request);
         String uuidString = userService.getSecretFromRequest(request);
         if (login == null || uuidString == null) {
             return false;
         }
         UUID uuid = UUID.fromString(uuidString);
-        return checkPrivilege(login, uuid, expectedRole);
+        return checkPrivilege(login, uuid);
     }
 
     public UUID tryToLogUser(String login, String password) {
-//        User user = userService.findUser(login);
-//        if (user != null && user.getPassword().equals(CryptUtils.sha256(password))) {
+        User user = userService.findUser(login);
+        if (user != null && user.getPassword().equals(CryptUtils.sha256(password))) {
             UUID secret = UUID.randomUUID();
             loggedUsers.put(login, secret);
             return secret;
-//        } else {
-//            return null;
-//        }
+        } else {
+            return null;
+        }
     }
 
     public Response handleLogin(String login, String password) {
-//        if (checkIfUserLoggedIn(login)) {
-//            return Response.ok().header(AUTHORIZATION, "OK").header("login", login).header("secret", loggedUsers.get(login)).build();
-//        }
+        if (checkIfUserLoggedIn(login)) {
+            return Response.ok().header(AUTHORIZATION, "OK").header("login", login).header("secret", loggedUsers.get(login)).build();
+        }
 
         UUID secret = tryToLogUser(login, password);
         if (secret == null) {
@@ -88,7 +89,7 @@ public class SecurityService {
         if (users.contains(login)) {
             return Response.status(Response.Status.CONFLICT).header("notUniqueLogin", true).build();
         }
-//        em.persist(new User(login, CryptUtils.sha256(password), Arrays.asList("USER")));
+        em.persist(new User(login, CryptUtils.sha256(password), UserUtils.createUserRole()));
         return Response.ok().status(Response.Status.CREATED).build();
     }
 

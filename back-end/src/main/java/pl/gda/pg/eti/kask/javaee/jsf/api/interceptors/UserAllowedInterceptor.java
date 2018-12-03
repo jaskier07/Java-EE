@@ -1,6 +1,8 @@
-package pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.implementation;
+package pl.gda.pg.eti.kask.javaee.jsf.api.interceptors;
 
-import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.UserAllowed;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewer;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.User;
 import pl.gda.pg.eti.kask.javaee.jsf.business.security.Permission;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.UserService;
@@ -16,7 +18,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 
 @Interceptor
-@UserAllowed
+@CheckPrivelege
 @Priority(Interceptor.Priority.APPLICATION)
 public class UserAllowedInterceptor implements Serializable {
 
@@ -40,7 +42,7 @@ public class UserAllowedInterceptor implements Serializable {
             throw new NullPointerException();
         }
         try {
-            if (isUserInRole(user, enteringMethodName)) {
+            if (isUserInRole(user, enteringMethodName, context)) {
                 return context.proceed();
             } else {
                 throw new NullPointerException();
@@ -50,10 +52,37 @@ public class UserAllowedInterceptor implements Serializable {
         }
     }
 
-    private boolean isUserInRole(User user, String enteringMethodName) throws NoSuchFieldException, IllegalAccessException {
+    private boolean isUserInRole(User user, String enteringMethodName, InvocationContext context) throws NoSuchFieldException, IllegalAccessException {
         Field field = user.getRole().getClass().getDeclaredField(enteringMethodName);
         field.setAccessible(true);
         Permission userPermission = (Permission)field.get(user.getRole());
-        return userPermission.equals(Permission.GRANTED);
+        if (userPermission.equals(Permission.GRANTED)) {
+            return true;
+        }  else if (userPermission.equals(Permission.IF_OWNER)) {
+            return isOwner(user, context);
+        }
+        else {
+            return false;
+        }
     }
+
+    private boolean isOwner(User user, InvocationContext context) {
+        Object[] parameters = context.getParameters();
+        for (Object parameter : parameters) {
+            if (parameter instanceof Beer) {
+                 Beer beer = (Beer)parameter;
+                 return beer.getOwner().equals(user);
+            } else if (parameter instanceof Brewer) {
+                Brewer brewer = (Brewer)parameter;
+                return brewer.getOwner().equals(user);
+            } else if (parameter instanceof Brewery) {
+                Brewery brewery = (Brewery)parameter;
+                return brewery.getOwner().equals(user);
+            }
+        }
+
+        return false;
+    }
+
+
 }

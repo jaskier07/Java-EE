@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces;
+package pl.gda.pg.eti.kask.javaee.jsf.api.interceptors;
 
 import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.ElementType;
@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @InterceptorBinding
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UserAllowed {
+public @interface CheckPrivelege {
 }
