@@ -1,4 +1,4 @@
-package pl.gda.pg.eti.kask.javaee.jsf.api.interceptors;
+package pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.implementation;
 
 import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.UserAllowed;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.User;
@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 
 @Interceptor
 @UserAllowed
-@Priority(1000)
+@Priority(Interceptor.Priority.APPLICATION)
 public class UserAllowedInterceptor implements Serializable {
 
     @Inject
@@ -41,14 +41,13 @@ public class UserAllowedInterceptor implements Serializable {
         }
         try {
             if (isUserInRole(user, enteringMethodName)) {
-                context.proceed();
+                return context.proceed();
             } else {
                 throw new NullPointerException();
             }
         } catch (Exception e) {
             throw new NullPointerException();
         }
-        return user;
     }
 
     private boolean isUserInRole(User user, String enteringMethodName) throws NoSuchFieldException, IllegalAccessException {

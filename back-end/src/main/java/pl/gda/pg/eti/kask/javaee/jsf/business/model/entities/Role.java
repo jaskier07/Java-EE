@@ -1,6 +1,5 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business.model.entities;
 
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +9,6 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.security.Permission;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -25,25 +23,21 @@ public class Role {
 
     private ExpectedRole roleName;
 
-    @NotNull private Permission getAllBeers;
-    @NotNull private Permission getBeersUsingPagination;
+    @NotNull private Permission findAllBeers;
     @NotNull private Permission saveBeer;
-    @NotNull private Permission getBeer;
-    @NotNull private Permission deleteBeer;
-    @NotNull private Permission updateBeer;
+    @NotNull private Permission findBeer;
+    @NotNull private Permission removeBeer;
 
-    @NotNull private Permission getAllBrewers;
-    @NotNull private Permission getBrewersByAge;
+    @NotNull private Permission findAllBrewers;
+    @NotNull private Permission findBrewersByAge;
     @NotNull private Permission saveBrewer;
-    @NotNull private Permission getBrewer;
-    @NotNull private Permission deleteBrewer;
-    @NotNull private Permission updateBrewer;
+    @NotNull private Permission findBrewer;
+    @NotNull private Permission removeBrewer;
 
-    @NotNull private Permission getAllBreweries;
+    @NotNull private Permission findAllBreweries;
     @NotNull private Permission saveBrewery;
-    @NotNull private Permission getBrewery;
-    @NotNull private Permission deleteBrewery;
-    @NotNull private Permission updateBrewery;
+    @NotNull private Permission findBrewery;
+    @NotNull private Permission removeBrewery;
 
     public Role() {}
 

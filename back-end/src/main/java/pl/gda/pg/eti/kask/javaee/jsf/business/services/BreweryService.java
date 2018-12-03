@@ -1,5 +1,7 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business.services;
 
+import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.OwnerOrAdminAllowed;
+import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.interfaces.UserAllowed;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewery;
@@ -59,7 +61,7 @@ public class BreweryService {
 
     /* breweries */
     public Brewery findBrewery(Long id) {
-        return em.createQuery(BreweryQueries.FIND_ONE, Brewery.class)
+        return em.createNamedQuery(BreweryQueries.FIND_ONE, Brewery.class)
                 .setParameter("id", id)
                 .getSingleResult();
     }
@@ -89,18 +91,21 @@ public class BreweryService {
     }
 
     /* beers */
+    @UserAllowed
     public Beer findBeer(Long id) {
-        return em.createQuery(BeerQueries.FIND_ONE, Beer.class)
+        return em.createNamedQuery(BeerQueries.FIND_ONE, Beer.class)
                 .setParameter("id", id)
                 .getSingleResult();
     }
 
+    @UserAllowed
     public Collection<Beer> findAllBeers() {
         return em.createNamedQuery(BeerQueries.FIND_ALL, Beer.class)
                 .getResultList();
     }
 
     @Transactional
+    @UserAllowed
     public Long saveBeer(Beer beer, HttpServletRequest request) {
         if (beer.getId() == null) {
             beer.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
@@ -114,13 +119,14 @@ public class BreweryService {
 
 
     @Transactional
+    @UserAllowed
     public void removeBeer(Beer beer) {
         beer = em.merge(beer);
         em.remove(beer);
     }
 
     public Collection<Brewer> findBrewersByAge(int from, int to) {
-        return em.createQuery(BrewerQueries.FIND_BY_AGE, Brewer.class)
+        return em.createNamedQuery(BrewerQueries.FIND_BY_AGE, Brewer.class)
                 .setParameter("from", normalizeValue(from))
                 .setParameter("to", normalizeValue(to))
                 .getResultList();

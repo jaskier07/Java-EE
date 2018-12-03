@@ -9,6 +9,7 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.services.UserService;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,6 +31,10 @@ public class SecurityService {
     @PersistenceContext
     private EntityManager em;
 
+    @RequestScoped
+    @Inject
+    private HttpServletRequest request;
+
     @Inject
     private UserService userService;
 
@@ -40,15 +45,12 @@ public class SecurityService {
         if (!loggedUsers.get(login).equals(uuid)) {
             return handleErrorBoolean();
         }
-//        if (userService.findUser(login).getRoles().contains(expectedRole)) {
-//            return true;
-//        }
-        return handleErrorBoolean();
+        return true;
     }
 
     public boolean checkPrivilege(HttpServletRequest httpRequest, String expectedRole) {
-        String login = userService.getLoginFromRequest(httpRequest);
-        String uuidString = userService.getSecretFromRequest(httpRequest);
+        String login = userService.getLoginFromRequest(request);
+        String uuidString = userService.getSecretFromRequest(request);
         if (login == null || uuidString == null) {
             return false;
         }

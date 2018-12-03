@@ -50,7 +50,6 @@ public class BeerController {
     private HttpServletRequest request;
 
     @GET
-    @UserAllowed
     public Collection<Beer> getAllBeers(HttpServletRequest httpRequest) {
         if (securityService.checkPrivilege(httpRequest, "USER")) {
             return breweryService.findAllBeers();
@@ -60,7 +59,6 @@ public class BeerController {
 
     @GET
     @Path("/all")
-    @UserAllowed
     public Collection<Beer> getBeersUsingPagination(
             @QueryParam("from") int from,
             @QueryParam("to") int to,
@@ -74,7 +72,6 @@ public class BeerController {
     }
 
     @POST
-    @UserAllowed
     public Response saveBeer(Beer beer) {
         if (securityService.checkPrivilege(request, "ADMIN")) {
             Long beerId = breweryService.saveBeer(beer, request);
@@ -86,7 +83,6 @@ public class BeerController {
 
     @GET
     @Path("/{beer}")
-    @UserAllowed
     public Beer getBeer(@PathParam(PATH_PARAM_BEER) Beer beer) {
         if (securityService.checkPrivilege(request, "USER")) {
             return beer;
@@ -97,7 +93,6 @@ public class BeerController {
 ;
     @DELETE
     @Path("/{beer}")
-    @UserAllowed
     public Response deleteBeer(@PathParam(PATH_PARAM_BEER) Beer beer) {
         if (securityService.checkPrivilege(request, "ADMIN")) {
             breweryService.removeBeer(beer);
@@ -108,7 +103,6 @@ public class BeerController {
 
     @PUT
     @Path("/{beer}")
-    @UserAllowed
     public Response updateBeer(@PathParam(PATH_PARAM_BEER) Beer originalBeer, Beer updatedBeer) {
         if (securityService.checkPrivilege(request, "ADMIN")) {
             if (!originalBeer.getId().equals(updatedBeer.getId())) {

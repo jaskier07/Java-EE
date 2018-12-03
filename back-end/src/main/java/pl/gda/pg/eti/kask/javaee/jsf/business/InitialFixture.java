@@ -98,46 +98,38 @@ public class InitialFixture {
 
     private Role createUserRole() {
         Role user = new Role();
-        user.setDeleteBeer(Permission.DENIED);
-        user.setDeleteBrewer(Permission.DENIED);
-        user.setDeleteBrewery(Permission.DENIED);
-        user.setGetAllBeers(Permission.GRANTED);
-        user.setGetAllBreweries(Permission.GRANTED);
-        user.setGetAllBrewers(Permission.GRANTED);
-        user.setGetBeer(Permission.GRANTED);
-        user.setGetBeersUsingPagination(Permission.GRANTED);
-        user.setGetBrewer(Permission.GRANTED);
-        user.setGetBrewery(Permission.GRANTED);
+        user.setRemoveBeer(Permission.IF_OWNER);
+        user.setRemoveBrewer(Permission.DENIED);
+        user.setRemoveBrewery(Permission.DENIED);
+        user.setFindAllBeers(Permission.GRANTED);
+        user.setFindAllBreweries(Permission.GRANTED);
+        user.setFindAllBrewers(Permission.GRANTED);
+        user.setFindBeer(Permission.GRANTED);
+        user.setFindBrewer(Permission.GRANTED);
+        user.setFindBrewery(Permission.GRANTED);
         user.setSaveBeer(Permission.GRANTED);
         user.setSaveBrewer(Permission.GRANTED);
         user.setSaveBrewery(Permission.GRANTED);
-        user.setUpdateBeer(Permission.IF_OWNER);
-        user.setUpdateBrewer(Permission.IF_OWNER);
-        user.setUpdateBrewery(Permission.IF_OWNER);
-        user.setGetBrewersByAge(Permission.GRANTED);
+        user.setFindBrewersByAge(Permission.GRANTED);
         user.setRoleName(ExpectedRole.USER);
         return user;
     }
 
     private Role createAdminRole() {
         Role admin = new Role();
-        admin.setDeleteBeer(Permission.GRANTED);
-        admin.setDeleteBrewer(Permission.GRANTED);
-        admin.setDeleteBrewery(Permission.GRANTED);
-        admin.setGetAllBeers(Permission.GRANTED);
-        admin.setGetAllBreweries(Permission.GRANTED);
-        admin.setGetAllBrewers(Permission.GRANTED);
-        admin.setGetBeer(Permission.GRANTED);
-        admin.setGetBeersUsingPagination(Permission.GRANTED);
-        admin.setGetBrewer(Permission.GRANTED);
-        admin.setGetBrewery(Permission.GRANTED);
+        admin.setRemoveBeer(Permission.GRANTED);
+        admin.setRemoveBrewer(Permission.GRANTED);
+        admin.setRemoveBrewery(Permission.GRANTED);
+        admin.setFindAllBeers(Permission.GRANTED);
+        admin.setFindAllBreweries(Permission.GRANTED);
+        admin.setFindAllBrewers(Permission.GRANTED);
+        admin.setFindBeer(Permission.GRANTED);
+        admin.setFindBrewer(Permission.GRANTED);
+        admin.setFindBrewery(Permission.GRANTED);
         admin.setSaveBeer(Permission.GRANTED);
         admin.setSaveBrewer(Permission.GRANTED);
         admin.setSaveBrewery(Permission.GRANTED);
-        admin.setUpdateBeer(Permission.GRANTED);
-        admin.setUpdateBrewer(Permission.GRANTED);
-        admin.setUpdateBrewery(Permission.GRANTED);
-        admin.setGetBrewersByAge(Permission.GRANTED);
+        admin.setFindBrewersByAge(Permission.GRANTED);
         admin.setRoleName(ExpectedRole.ADMIN);
         return admin;
     }
