@@ -4,16 +4,25 @@ import {Observable} from 'rxjs';
 import {API_URI} from '../shared-service';
 import {Brewer} from '../../model/brewer';
 import {HeaderUtils} from '../../utils/header-utils';
+import {Beer} from '../../model/beer';
 
 @Injectable()
 export class BrewerService {
   private headerUtils = new HeaderUtils();
+
   constructor(private http: HttpClient) {
   }
 
   findBrewer(id: number): Observable<HttpResponse<Brewer>> {
+
     return this.http.get<Brewer>(API_URI + `brewer/${id}`, {
       observe: 'response',
+      headers: this.headerUtils.setSecretAsHeaders()
+    });
+  }
+
+  findBrewersByNewest():  Observable<Brewer[]> {
+    return this.http.get<Brewer[]>(API_URI + 'brewer/getByNewest', {
       headers: this.headerUtils.setSecretAsHeaders()
     });
   }

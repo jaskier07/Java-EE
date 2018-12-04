@@ -44,8 +44,8 @@ public class BeerController {
     SecurityService securityService;
 
     @GET
-    public Collection<Beer> getAllBeers(HttpServletRequest httpRequest) {
-        if (securityService.checkPrivilege()) {
+    public Collection<Beer> getAllBeers() {
+        if (securityService.verifyUser()) {
             return breweryService.findAllBeers();
         }
         throw new NullPointerException();
@@ -57,7 +57,7 @@ public class BeerController {
             @QueryParam("from") int from,
             @QueryParam("to") int to,
             @QueryParam("diff") int diff) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             Pagination pagination = new Pagination(from, to);
             pagination.normalizeWithSize(breweryService.findAllBeers().size());
             return new ArrayList<>(breweryService.findAllBeers()).subList(pagination.getFrom(), pagination.getTo());
@@ -67,7 +67,7 @@ public class BeerController {
 
     @POST
     public Response saveBeer(Beer beer) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             Long beerId = breweryService.saveBeer(beer);
             return created(uri(BeerController.class, METHOD_GET_BEER, beerId)).build();
         }
@@ -78,7 +78,7 @@ public class BeerController {
     @GET
     @Path("/{beer}")
     public Beer getBeer(@PathParam(PATH_PARAM_BEER) Beer beer) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             return beer;
         }
         throw new NullPointerException();
@@ -88,7 +88,7 @@ public class BeerController {
     @DELETE
     @Path("/{beer}")
     public Response deleteBeer(@PathParam(PATH_PARAM_BEER) Beer beer) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             breweryService.removeBeer(beer);
             return noContent().build();
         }
@@ -98,7 +98,7 @@ public class BeerController {
     @PUT
     @Path("/{beer}")
     public Response updateBeer(@PathParam(PATH_PARAM_BEER) Beer originalBeer, Beer updatedBeer) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             if (!originalBeer.getId().equals(updatedBeer.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }

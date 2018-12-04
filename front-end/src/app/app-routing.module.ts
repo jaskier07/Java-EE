@@ -10,6 +10,7 @@ import {ListBrewersComponent} from './components/brewer/list-brewers/list-brewer
 import {ViewBrewerComponent} from './components/brewer/view-brewer/view-brewer.component';
 import {EditBrewerComponent} from './components/brewer/edit-brewer/edit-brewer.component';
 import {LoginPageComponent} from './components/login-page/login-page.component';
+import {ListBrewersNewestComponent} from './components/brewer/list-brewers-newest/list-brewers-newest.component';
 
 const routes: Routes = [
   {path: '', component: ListBreweriesComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path: 'brewers/new', component: EditBrewerComponent},
   {path: 'brewers/:id', component: ViewBrewerComponent},
   {path: 'brewers/:id/edit', component: EditBrewerComponent},
+  {path: 'brewersNewest', component: ListBrewersNewestComponent},
 
   {path: 'login', component: LoginPageComponent}
 ];

@@ -1,11 +1,13 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business.model.entities;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.queries.BrewerQueries;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,11 +16,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Version;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,10 +65,26 @@ public class Brewer {
     @ManyToOne
     private User owner;
 
+    @Version
+    @Getter(AccessLevel.NONE)
+    private int version;
+
+    private Date lastUpdateDate;
+
     public Brewer(String name, Integer age, Set<Beer> beers, User owner) {
         this.name = name;
         this.age = age;
         this.beers = beers;
         this.owner = owner;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.lastUpdateDate = new Date();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.lastUpdateDate = new Date();
     }
 }

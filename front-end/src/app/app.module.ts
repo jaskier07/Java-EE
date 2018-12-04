@@ -19,6 +19,7 @@ import {ViewBrewerComponent} from './components/brewer/view-brewer/view-brewer.c
 import {EditBrewerComponent} from './components/brewer/edit-brewer/edit-brewer.component';
 import {LoginPageComponent} from './components/login-page/login-page.component';
 import {AccountService} from './components/login-page/account-service';
+import {ListBrewersNewestComponent} from './components/brewer/list-brewers-newest/list-brewers-newest.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {AccountService} from './components/login-page/account-service';
     ListBrewersComponent,
     ViewBrewerComponent,
     EditBrewerComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    ListBrewersNewestComponent
   ],
   imports: [
     BrowserModule,

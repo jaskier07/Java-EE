@@ -3,8 +3,8 @@ package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.AccessControl;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.IBrewerFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewer;
-import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
+import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
@@ -19,6 +19,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.Response.Status;
 import static javax.ws.rs.core.Response.created;
@@ -47,7 +48,7 @@ public class BrewerController {
 
     @GET
     public Collection<Brewer> getAllBrewers() {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             return breweryService.findAllBrewers();
         }
         throw new NullPointerException();
@@ -57,15 +58,29 @@ public class BrewerController {
     @Path("/filterByAge")
     public Collection<Brewer> getBrewersByAge(@QueryParam("from") String from,
                                               @QueryParam("to") String to) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             return breweryService.findBrewersByAge(Integer.parseInt(from), Integer.parseInt(to));
+        }
+        throw new NullPointerException();
+    }
+
+    @GET
+    @Path("/getByNewest")
+    public Collection<Brewer> getBrewersByNewest() {
+        if (securityService.verifyUser()) {
+            return breweryService.findAllBrewers().stream().sorted((o1, o2) ->  {
+                if (o1.getLastUpdateDate().equals(o2.getLastUpdateDate())) {
+                    return 0;
+                }
+                return (o1.getLastUpdateDate().before(o2.getLastUpdateDate()) ? 1 : -1);
+            }).collect(Collectors.toList());
         }
         throw new NullPointerException();
     }
 
     @POST
     public Response saveBrewer(Brewer brewer) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             Long brewerId = breweryService.saveBrewer(brewer, request);
             return created(uri(BrewerController.class, METHOD_GET_BREWER, brewerId)).build();
         }
@@ -75,7 +90,7 @@ public class BrewerController {
     @GET
     @Path("/{brewer}")
     public Brewer getBrewer(@PathParam(PATH_PARAM_BREWER) Brewer brewer) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             return brewer;
         }
         throw new NullPointerException();
@@ -84,7 +99,7 @@ public class BrewerController {
     @DELETE
     @Path("/{brewer}")
     public Response deleteBrewer(@PathParam(PATH_PARAM_BREWER) Brewer brewer) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             breweryService.removeBrewer(brewer);
             return noContent().build();
         }
@@ -94,7 +109,7 @@ public class BrewerController {
     @PUT
     @Path("/{brewer}")
     public Response updateBrewer(@PathParam(PATH_PARAM_BREWER) Brewer originalBrewer, Brewer updatedBrewer) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             if (!originalBrewer.getId().equals(updatedBrewer.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }

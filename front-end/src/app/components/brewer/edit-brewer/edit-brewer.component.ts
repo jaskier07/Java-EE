@@ -18,6 +18,7 @@ export class EditBrewerComponent extends EditEntity implements OnInit {
   brewer: Brewer;
   private headerUtils = new HeaderUtils();
   availableBeers: Beer[];
+
   @ViewChild('errorName') errorName: any;
   @ViewChild('errorAge') errorAge: any;
   @ViewChild('errorBeers') errorBeers: any;

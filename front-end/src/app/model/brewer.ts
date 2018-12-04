@@ -5,6 +5,7 @@ export class Brewer {
   name: string;
   age: number;
   beers: Beer[];
+  lastUpdateDate: Date;
 
   constructor() {
     this.name = '';

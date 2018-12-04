@@ -17,7 +17,6 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,7 @@ public class SecurityService {
     @Inject
     private UserService userService;
 
-    public boolean checkPrivilege(String login, UUID uuid) {
+    public boolean verifyUser(String login, UUID uuid) {
         if (!checkIfUserLoggedIn(login)) {
             return handleErrorBoolean();
         }
@@ -49,14 +48,14 @@ public class SecurityService {
         return true;
     }
 
-    public boolean checkPrivilege() {
+    public boolean verifyUser() {
         String login = userService.getLoginFromRequest(request);
         String uuidString = userService.getSecretFromRequest(request);
         if (login == null || uuidString == null) {
             return false;
         }
         UUID uuid = UUID.fromString(uuidString);
-        return checkPrivilege(login, uuid);
+        return verifyUser(login, uuid);
     }
 
     public UUID tryToLogUser(String login, String password) {

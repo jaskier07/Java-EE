@@ -47,7 +47,7 @@ public class BreweryController {
 
     @GET
     public Collection<Brewery> getAllBreweries() {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             return breweryService.findAllBreweries();
         }
         throw new NullPointerException();
@@ -56,7 +56,7 @@ public class BreweryController {
 
     @POST
     public Response saveBrewery(Brewery brewery) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             Long breweryId = breweryService.saveBrewery(brewery, request);
             return created(uri(BreweryController.class, METHOD_GET_BREWERY, breweryId)).build();
         }
@@ -66,7 +66,7 @@ public class BreweryController {
     @GET
     @Path("/{brewery}")
     public Brewery getBrewery(@PathParam(PATH_PARAM_BREWERY) Brewery brewery) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             return brewery;
         }
         throw new NullPointerException();
@@ -75,7 +75,7 @@ public class BreweryController {
     @DELETE
     @Path("/{brewery}")
     public Response deleteBrewery(@PathParam(PATH_PARAM_BREWERY) Brewery brewery) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             breweryService.removeBrewery(brewery);
             return noContent().build();
         }
@@ -85,7 +85,7 @@ public class BreweryController {
     @PUT
     @Path("/{brewery}")
     public Response updateBrewery(@PathParam(PATH_PARAM_BREWERY) Brewery originalBrewery, Brewery updatedBrewery) {
-        if (securityService.checkPrivilege()) {
+        if (securityService.verifyUser()) {
             if (!originalBrewery.getId().equals(updatedBrewery.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }

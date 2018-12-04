@@ -17,6 +17,7 @@ import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.List;
 
 @ApplicationScoped
 public class BreweryService {
@@ -43,7 +44,7 @@ public class BreweryService {
     }
 
     @CheckPrivelege
-    public Collection<Brewer> findAllBrewers() {
+    public List<Brewer> findAllBrewers() {
         TypedQuery<Brewer> query = em.createNamedQuery(BrewerQueries.FIND_ALL, Brewer.class);
         return query.getResultList();
     }
