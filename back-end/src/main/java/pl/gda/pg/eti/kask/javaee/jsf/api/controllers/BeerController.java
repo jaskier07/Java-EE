@@ -5,12 +5,11 @@ import pl.gda.pg.eti.kask.javaee.jsf.api.Pagination;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.AccessControl;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.IBeerFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
-import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
+import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -102,7 +101,7 @@ public class BeerController {
             if (!originalBeer.getId().equals(updatedBeer.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }
-            breweryService.saveBeer(updatedBeer);
+            breweryService.updateBeer(updatedBeer);
             return ok(updatedBeer).build();
         }
         throw new NullPointerException();

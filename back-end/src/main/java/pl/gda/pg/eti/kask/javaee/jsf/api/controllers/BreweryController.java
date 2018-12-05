@@ -4,13 +4,11 @@ package pl.gda.pg.eti.kask.javaee.jsf.api.controllers;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.AccessControl;
 import pl.gda.pg.eti.kask.javaee.jsf.api.filters.interfaces.IBreweryFilter;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewery;
-import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
+import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -41,10 +39,6 @@ public class BreweryController {
     @Inject
     SecurityService securityService;
 
-    @RequestScoped
-    @Inject
-    private HttpServletRequest request;
-
     @GET
     public Collection<Brewery> getAllBreweries() {
         if (securityService.verifyUser()) {
@@ -57,7 +51,7 @@ public class BreweryController {
     @POST
     public Response saveBrewery(Brewery brewery) {
         if (securityService.verifyUser()) {
-            Long breweryId = breweryService.saveBrewery(brewery, request);
+            Long breweryId = breweryService.saveBrewery(brewery);
             return created(uri(BreweryController.class, METHOD_GET_BREWERY, breweryId)).build();
         }
         throw new NullPointerException();
@@ -89,7 +83,7 @@ public class BreweryController {
             if (!originalBrewery.getId().equals(updatedBrewery.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }
-            breweryService.saveBrewery(updatedBrewery, request);
+            breweryService.updateBrewery(updatedBrewery);
             return ok().build();
         }
         throw new NullPointerException();

@@ -23,6 +23,9 @@ public class UserUtils {
         user.setSaveBrewery(Permission.GRANTED);
         user.setFindBrewersByAge(Permission.GRANTED);
         user.setRoleName(ExpectedRole.USER);
+        user.setUpdateBeer(Permission.IF_OWNER);
+        user.setUpdateBrewer(Permission.IF_OWNER);
+        user.setUpdateBrewery(Permission.IF_OWNER);
         return user;
     }
 
@@ -42,6 +45,9 @@ public class UserUtils {
         admin.setSaveBrewery(Permission.GRANTED);
         admin.setFindBrewersByAge(Permission.GRANTED);
         admin.setRoleName(ExpectedRole.ADMIN);
+        admin.setUpdateBeer(Permission.GRANTED);
+        admin.setUpdateBrewer(Permission.GRANTED);
+        admin.setUpdateBrewery(Permission.GRANTED);
         return admin;
     }
 

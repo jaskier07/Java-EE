@@ -49,15 +49,62 @@ public class BreweryService {
         return query.getResultList();
     }
 
+//    public Long saveOrUpdateBrewery(Brewery brewery) {
+//        if (brewery.getId() == null) {
+//            return saveBrewery(brewery);
+//        } else {
+//            return updateBrewery(brewery);
+//        }
+//    }
+
     @Transactional
     @CheckPrivelege
-    public Long saveBrewer(Brewer brewer, HttpServletRequest request) {
-        if (brewer.getId() == null) {
-            brewer.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
-            em.persist(brewer);
+    public Long updateBrewery(Brewery brewery) {
+        brewery = em.merge(brewery);
+        em.flush();
+        return brewery.getId();
+    }
+
+    public Long saveOrUpdateBeer(Beer beer) {
+        if (beer.getId() == null) {
+            return saveBeer(beer);
         } else {
-            brewer = em.merge(brewer);
+            return updateBeer(beer);
         }
+    }
+
+    @Transactional
+    @CheckPrivelege
+    public Long updateBeer(Beer beer) {
+        beer = em.merge(beer);
+        em.flush();
+        return beer.getId();
+    }
+
+    public Long saveOrUpdateBrewer(Brewer brewer) {
+        if (brewer.getId() == null) {
+            return saveBrewer(brewer);
+        } else {
+            return updateBrewer(brewer);
+        }
+    }
+
+    @Transactional
+    @CheckPrivelege
+    public Long saveBrewer(Brewer brewer) {
+        for (Beer beer : brewer.getBeers()) {
+            em.merge(beer);
+        }
+        brewer.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
+        em.persist(brewer);
+        em.flush();
+        return brewer.getId();
+    }
+
+    @Transactional
+    @CheckPrivelege
+    public Long updateBrewer(Brewer brewer) {
+        brewer = em.merge(brewer);
         em.flush();
         return brewer.getId();
     }
@@ -86,13 +133,9 @@ public class BreweryService {
 
     @Transactional
     @CheckPrivelege
-    public Long saveBrewery(Brewery brewery, HttpServletRequest request) {
-        if (brewery.getId() == null) {
-            brewery.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
-            em.persist(brewery);
-        } else {
-            brewery = em.merge(brewery);
-        }
+    public Long saveBrewery(Brewery brewery) {
+        brewery.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
+        em.persist(brewery);
         em.flush();
         return brewery.getId();
     }
@@ -121,12 +164,8 @@ public class BreweryService {
     @Transactional
     @CheckPrivelege
     public Long saveBeer(Beer beer) {
-        if (beer.getId() == null) {
-            beer.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
-            em.persist(beer);
-        } else {
-            beer = em.merge(beer);
-        }
+        beer.setOwner(userService.findUser(userService.getLoginFromRequest(request)));
+        em.persist(beer);
         em.flush();
         return beer.getId();
     }

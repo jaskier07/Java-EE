@@ -7,9 +7,7 @@ import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.BreweryService;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -41,10 +39,6 @@ public class BrewerController {
 
     @Inject
     SecurityService securityService;
-
-    @RequestScoped
-    @Inject
-    private HttpServletRequest request;
 
     @GET
     public Collection<Brewer> getAllBrewers() {
@@ -81,7 +75,7 @@ public class BrewerController {
     @POST
     public Response saveBrewer(Brewer brewer) {
         if (securityService.verifyUser()) {
-            Long brewerId = breweryService.saveBrewer(brewer, request);
+            Long brewerId = breweryService.saveBrewer(brewer);
             return created(uri(BrewerController.class, METHOD_GET_BREWER, brewerId)).build();
         }
         throw new NullPointerException();
@@ -113,10 +107,9 @@ public class BrewerController {
             if (!originalBrewer.getId().equals(updatedBrewer.getId())) {
                 return status(Status.BAD_REQUEST).build();
             }
-            breweryService.saveBrewer(updatedBrewer, request);
+            breweryService.updateBrewer(updatedBrewer);
             return ok().build();
         }
         throw new NullPointerException();
     }
-
 }

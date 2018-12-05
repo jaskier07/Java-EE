@@ -4,7 +4,10 @@
  */
 package pl.gda.pg.eti.kask.javaee.jsf.business.security;
 
+import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.ExpectedRole;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Role;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.User;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.queries.RoleQueries;
 import pl.gda.pg.eti.kask.javaee.jsf.business.services.UserService;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.UserUtils;
@@ -88,8 +91,27 @@ public class SecurityService {
         if (users.contains(login)) {
             return Response.status(Response.Status.CONFLICT).header("notUniqueLogin", true).build();
         }
-        em.persist(new User(login, CryptUtils.sha256(password), UserUtils.createUserRole()));
+        em.persist(new User(login, CryptUtils.sha256(password), findRole(ExpectedRole.USER)));
         return Response.ok().status(Response.Status.CREATED).build();
+    }
+
+    public Role findRole(ExpectedRole expectedRole) {
+        List<Role> query = em.createNamedQuery(RoleQueries.FIND_ONE, Role.class)
+                .setParameter("roleName", expectedRole)
+                .getResultList();
+        if (query.isEmpty()) {
+            return createUserRole();
+        } else {
+            return query.get(0);
+        }
+    }
+
+    @Transactional
+    private Role createUserRole() {
+        Role role = UserUtils.createUserRole();
+        em.persist(role);
+        em.flush();
+        return role;
     }
 
     @Transactional
