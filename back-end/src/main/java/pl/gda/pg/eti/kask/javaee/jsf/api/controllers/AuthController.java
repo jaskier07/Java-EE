@@ -37,15 +37,15 @@ public class AuthController {
                           @QueryParam("password") String password,
                           @Context HttpServletRequest request) {
 
-            return userService.handleLogin(login, password);
+        return userService.handleLogin(login, password);
     }
 
     @POST
     @Path("/register")
     @PermitAll
     public Response register(@QueryParam("login") String login,
-                          @QueryParam("password") String password,
-                          @Context HttpServletRequest request) {
+                             @QueryParam("password") String password,
+                             @Context HttpServletRequest request) {
 
         return userService.handleRegister(login, password);
     }
@@ -54,8 +54,8 @@ public class AuthController {
     @Path("/logout")
     @PermitAll
     public Response logout(@QueryParam("login") String login,
-                          @QueryParam("secret") String secret,
-                          @Context HttpServletRequest request) {
+                           @QueryParam("secret") String secret,
+                           @Context HttpServletRequest request) {
 
         return userService.logout(login, secret);
     }
@@ -64,10 +64,10 @@ public class AuthController {
     @Path("/password")
     @PermitAll
     public Response changePassword(
-                                   @QueryParam("login") String login,
-                                   @QueryParam("oldPsswd") String oldPsswd,
-                          @QueryParam("newPsswd") String newPsswd,
-                          @Context HttpServletRequest request) {
+            @QueryParam("login") String login,
+            @QueryParam("oldPsswd") String oldPsswd,
+            @QueryParam("newPsswd") String newPsswd,
+            @Context HttpServletRequest request) {
 
         return userService.changePassword(login, oldPsswd, newPsswd);
     }

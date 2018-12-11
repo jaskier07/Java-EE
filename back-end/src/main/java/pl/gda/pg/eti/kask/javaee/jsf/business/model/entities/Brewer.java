@@ -38,9 +38,9 @@ import static javax.persistence.CascadeType.REFRESH;
 @Setter
 @NoArgsConstructor
 @NamedQueries({
-        @NamedQuery(name = BrewerQueries.FIND_ALL, query = "select b from Brewer b"),
-        @NamedQuery(name = BrewerQueries.FIND_ONE, query = "select b from Brewer b where b.id = :id"),
-        @NamedQuery(name = BrewerQueries.FIND_BY_AGE, query = "select b from Brewer b where (b.age >= :from and b.age < :to)")
+        @NamedQuery(name = BrewerQueries.FIND_ALL, query = "SELECT DISTINCT b FROM Brewer b LEFT JOIN FETCH b.beers beers"),
+        @NamedQuery(name = BrewerQueries.FIND_ONE, query = "SELECT b FROM Brewer b LEFT JOIN FETCH b.beers beers where b.id = :id "),
+        @NamedQuery(name = BrewerQueries.FIND_BY_AGE, query = "SELECT DISTINCT b FROM Brewer b LEFT JOIN FETCH b.beers beers where (b.age >= :from AND b.age < :to)")
 })
 public class Brewer {
 

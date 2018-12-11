@@ -1,12 +1,10 @@
 package pl.gda.pg.eti.kask.javaee.jsf.business;
 
-import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.ExpectedRole;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Role;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.User;
-import pl.gda.pg.eti.kask.javaee.jsf.business.security.Permission;
 import pl.gda.pg.eti.kask.javaee.jsf.business.security.SecurityService;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.CryptUtils;
 import pl.gda.pg.eti.kask.javaee.jsf.utils.DateUtils;

@@ -25,8 +25,8 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @NamedQueries({
-        @NamedQuery(name = BeerQueries.FIND_ALL, query = "select b from Beer b"),
-        @NamedQuery(name = BeerQueries.FIND_ONE, query = "select b from Beer b where b.id = :id")
+        @NamedQuery(name = BeerQueries.FIND_ALL, query = "SELECT b FROM Beer b"),
+        @NamedQuery(name = BeerQueries.FIND_ONE, query = "SELECT b FROM Beer b WHERE b.id = :id")
 })
 public class Beer {
 

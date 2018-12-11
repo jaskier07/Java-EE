@@ -54,7 +54,7 @@ export class AccountService {
       .subscribe(response => {
         if (response.status === this.CREATED) {
           alert('Utworzono konto.');
-          // location.reload(true); FIXME testy
+          location.reload(true);
         } else {
           alert('Błąd rejestracji!');
         }

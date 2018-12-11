@@ -49,14 +49,6 @@ public class BreweryService {
         return query.getResultList();
     }
 
-//    public Long saveOrUpdateBrewery(Brewery brewery) {
-//        if (brewery.getId() == null) {
-//            return saveBrewery(brewery);
-//        } else {
-//            return updateBrewery(brewery);
-//        }
-//    }
-
     @Transactional
     @CheckPrivelege
     public Long updateBrewery(Brewery brewery) {

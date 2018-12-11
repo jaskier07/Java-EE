@@ -41,7 +41,7 @@ public class SecurityService {
     @Inject
     private UserService userService;
 
-    public boolean verifyUser(String login, UUID uuid) {
+    private boolean verifyUser(String login, UUID uuid) {
         if (!checkIfUserLoggedIn(login)) {
             return handleErrorBoolean();
         }
@@ -61,7 +61,7 @@ public class SecurityService {
         return verifyUser(login, uuid);
     }
 
-    public UUID tryToLogUser(String login, String password) {
+    private UUID tryToLogUser(String login, String password) {
         User user = userService.findUser(login);
         if (user != null && user.getPassword().equals(CryptUtils.sha256(password))) {
             UUID secret = UUID.randomUUID();
@@ -95,7 +95,7 @@ public class SecurityService {
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
-    public Role findRole(ExpectedRole expectedRole) {
+    private Role findRole(ExpectedRole expectedRole) {
         List<Role> query = em.createNamedQuery(RoleQueries.FIND_ONE, Role.class)
                 .setParameter("roleName", expectedRole)
                 .getResultList();

@@ -33,8 +33,8 @@ import static javax.persistence.CascadeType.REFRESH;
 @Setter
 @NoArgsConstructor
 @NamedQueries({
-        @NamedQuery(name = BreweryQueries.FIND_ALL, query = "select b from Brewery b"),
-        @NamedQuery(name = BreweryQueries.FIND_ONE, query = "select b from Brewery b where b.id = :id")
+        @NamedQuery(name = BreweryQueries.FIND_ALL, query = "SELECT DISTINCT b FROM Brewery b JOIN FETCH b.beers beers"),
+        @NamedQuery(name = BreweryQueries.FIND_ONE, query = "SELECT DISTINCT b FROM Brewery b JOIN FETCH b.beers beers WHERE b.id = :id")
 })
 public class Brewery {
 
