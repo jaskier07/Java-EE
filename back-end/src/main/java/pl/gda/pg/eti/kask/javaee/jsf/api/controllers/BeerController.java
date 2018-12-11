@@ -33,7 +33,7 @@ import static pl.gda.pg.eti.kask.javaee.jsf.utils.UriUtils.uri;
 @ApplicationScoped
 @AccessControl
 public class BeerController {
-    public static final String METHOD_GET_BEER = "getBeer";
+    private static final String METHOD_GET_BEER = "getBeer";
     private static final String PATH_PARAM_BEER = "beer";
 
     @Inject
@@ -64,6 +64,19 @@ public class BeerController {
         throw new NullPointerException();
     }
 
+    @GET
+    @Path("/filter")
+    public Collection<Beer> filterBeers(
+            @QueryParam("id") String id,
+            @QueryParam("name") String name,
+            @QueryParam("voltage") String voltage,
+            @QueryParam("ibu") String ibu) {
+        if (securityService.verifyUser()) {
+            return  breweryService.filterBeers(id, name, voltage, ibu);
+        }
+        throw new NullPointerException();
+    }
+
     @POST
     public Response saveBeer(Beer beer) {
         if (securityService.verifyUser()) {
@@ -71,7 +84,6 @@ public class BeerController {
             return created(uri(BeerController.class, METHOD_GET_BEER, beerId)).build();
         }
         throw new NullPointerException();
-
     }
 
     @GET

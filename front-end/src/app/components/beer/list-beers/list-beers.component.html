@@ -9,6 +9,16 @@
     <td></td>
     <td></td>
   </tr>
+  <tr>
+    <td><input type="text" #idInput name="id" class="form-control"></td>
+    <td><input type="text" #nameInput name="name" class="form-control"></td>
+    <td><input type="text" #voltageInput name="voltage" class="form-control"></td>
+    <td><input type="text" #ibuInput name="ibu" class="form-control"></td>
+    <td><button class="btn btn-primary" (click)="filter()">FILTRUJ</button></td>
+    <td><button class="btn btn-info" (click)="clearFilters()">WYCZYŚĆ</button></td>
+    <td></td>
+    <td></td>
+  </tr>
   <tr *ngFor="let beer of beers">
     <td>
       {{beer.id}}

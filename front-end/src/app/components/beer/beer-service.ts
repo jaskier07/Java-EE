@@ -22,6 +22,15 @@ export class BeerService {
     });
   }
 
+  filterBeers(id: string, name: string, voltage: string, ibu: string): Observable<HttpResponse<Beer[]>> {
+    const params = new HttpParams().set('id', id).set('name', name).set('voltage', voltage).set('ibu', ibu);
+    return this.http.get<Beer[]>(API_URI + 'beer/filter', {
+      params: params,
+      observe: 'response', headers: this.headerUtils.setSecretAsHeaders()
+    });
+  }
+
+
   findBeersUsingPaginationUri(uri: string, diff: string): Observable<HttpResponse<Beer[]>> {
     const params = new HttpParams().set('diff', diff);
     const fineUri = uri.slice(1);

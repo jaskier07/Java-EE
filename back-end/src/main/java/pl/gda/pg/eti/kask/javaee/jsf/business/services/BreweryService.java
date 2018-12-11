@@ -2,6 +2,7 @@ package pl.gda.pg.eti.kask.javaee.jsf.business.services;
 
 import pl.gda.pg.eti.kask.javaee.jsf.api.interceptors.CheckPrivelege;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer;
+import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Beer_;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewer;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.entities.Brewery;
 import pl.gda.pg.eti.kask.javaee.jsf.business.model.queries.BeerQueries;
@@ -14,6 +15,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.Collection;
@@ -185,6 +189,58 @@ public class BreweryService {
             return MAX_AGE;
         } else {
             return value;
+        }
+    }
+
+    @Transactional
+    @CheckPrivelege
+    public List<Beer> filterBeers(String idString, String name, String voltageString, String ibuString) {
+        Long id = tryToParseLong(idString);
+        Double voltage = tryToParseDouble(voltageString);
+        Integer ibu = tryToParseInteger(ibuString);
+
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Beer> query = builder.createQuery(Beer.class);
+        Root<Beer> beer = query.from(Beer.class);
+        query.select(beer);
+
+        if (id != null) {
+            query.where(builder.equal(beer.get(Beer_.id), id));
+        }
+        if (name != null && !(name.trim().equals(""))) {
+            query.where(builder.like(builder.lower(beer.get(Beer_.name)), "%" + name.toLowerCase() + "%"));
+        }
+        if (voltage != null) {
+            query.where(builder.equal(beer.get(Beer_.voltage), voltage));
+        }
+        if (ibu != null) {
+            query.where(builder.equal(beer.get(Beer_.IBU), ibu));
+        }
+
+        return em.createQuery(query).getResultList();
+    }
+
+    private Long tryToParseLong(String value) {
+        try {
+            return Long.valueOf(value);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Integer tryToParseInteger(String value) {
+        try {
+            return Integer.valueOf(value);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Double tryToParseDouble(String value) {
+        try {
+            return Double.valueOf(value);
+        } catch (Exception e) {
+            return null;
         }
     }
 }

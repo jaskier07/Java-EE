@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Beer} from '../../../model/beer';
 import {BeerService} from '../beer-service';
 import {HateoasUtils} from '../../../utils/hateoas-utils';
@@ -11,6 +11,10 @@ import {HeaderUtils} from '../../../utils/header-utils';
   styleUrls: ['./list-beers.component.css']
 })
 export class ListBeersComponent implements OnInit {
+  @ViewChild('idInput') idInput: any;
+  @ViewChild('nameInput') nameInput: any;
+  @ViewChild('voltageInput') voltageInput: any;
+  @ViewChild('ibuInput') ibuInput: any;
 
   private headerUtils = new HeaderUtils();
   private DIFF = 5;
@@ -28,6 +32,16 @@ export class ListBeersComponent implements OnInit {
     this.beerService.findBeersUsingPagination(this.from.toString(), this.to.toString(), this.DIFF.toString())
       .subscribe(response => {
         this.handleResponse(response);
+      });
+  }
+
+  filter() {
+    this.beerService.filterBeers(this.idInput.nativeElement.value,
+      this.nameInput.nativeElement.value,
+      this.voltageInput.nativeElement.value,
+      this.ibuInput.nativeElement.value)
+      .subscribe(response => {
+        this.beers = response.body;
       });
   }
 
@@ -63,4 +77,12 @@ export class ListBeersComponent implements OnInit {
       });
   }
 
+  clearFilters() {
+    console.log(this.idInput);
+    this.idInput.nativeElement.value = '';
+    this.nameInput.nativeElement.value = '';
+    this.voltageInput.nativeElement.value = '';
+    this.ibuInput.nativeElement.value = '';
+    this.ngOnInit();
+  }
 }

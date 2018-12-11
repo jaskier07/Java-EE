@@ -29,28 +29,44 @@ public class Role {
 
     private ExpectedRole roleName;
 
-    @NotNull private Permission findAllBeers;
-    @NotNull private Permission saveBeer;
+    @NotNull
+    private Permission findAllBeers;
+    @NotNull
+    private Permission saveBeer;
     @NotNull
     private Permission updateBeer;
-    @NotNull private Permission findBeer;
-    @NotNull private Permission removeBeer;
+    @NotNull
+    private Permission findBeer;
+    @NotNull
+    private Permission removeBeer;
+    @NotNull
+    private Permission filterBeers;
 
-    @NotNull private Permission findAllBrewers;
-    @NotNull private Permission findBrewersByAge;
-    @NotNull private Permission saveBrewer;
+    @NotNull
+    private Permission findAllBrewers;
+    @NotNull
+    private Permission findBrewersByAge;
+    @NotNull
+    private Permission saveBrewer;
     @NotNull
     private Permission updateBrewer;
-    @NotNull private Permission findBrewer;
-    @NotNull private Permission removeBrewer;
+    @NotNull
+    private Permission findBrewer;
+    @NotNull
+    private Permission removeBrewer;
 
-    @NotNull private Permission findAllBreweries;
-    @NotNull private Permission saveBrewery;
+    @NotNull
+    private Permission findAllBreweries;
+    @NotNull
+    private Permission saveBrewery;
     @NotNull
     private Permission updateBrewery;
-    @NotNull private Permission findBrewery;
-    @NotNull private Permission removeBrewery;
+    @NotNull
+    private Permission findBrewery;
+    @NotNull
+    private Permission removeBrewery;
 
-    public Role() {}
+    public Role() {
+    }
 
 }

@@ -26,6 +26,7 @@ public class UserUtils {
         user.setUpdateBeer(Permission.IF_OWNER);
         user.setUpdateBrewer(Permission.IF_OWNER);
         user.setUpdateBrewery(Permission.IF_OWNER);
+        user.setFilterBeers(Permission.GRANTED);
         return user;
     }
 
@@ -48,6 +49,7 @@ public class UserUtils {
         admin.setUpdateBeer(Permission.GRANTED);
         admin.setUpdateBrewer(Permission.GRANTED);
         admin.setUpdateBrewery(Permission.GRANTED);
+        admin.setFilterBeers(Permission.GRANTED);
         return admin;
     }
 
